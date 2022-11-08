@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import styles from './Header.module.scss';
 
 const Component = ({ className, currentUser }) => {
-console.log(currentUser);
+  
   let links;
   
   if (currentUser.role === ('admin' || 'user')) {

@@ -6,31 +6,36 @@ import DataPicker from '../common/DataPicker';
 import Options from '../common/Options';
 import UploadButton from '../common/UploadButton';
 import { useDispatch } from 'react-redux';
-import { addPost } from '../../redux/postsRedux';
+import { addPost, editPost } from '../../redux/postsRedux';
 import { Redirect } from "react-router-dom";
 
 
-export default function MultilineTextFields() {
+export default function MultilineTextFields({data}) {
 
-  const [title, setTitle] = React.useState('');
-  const [published, setPublished] = React.useState('');
-  const [img, setImg] = React.useState('');
-  const [content, setContent] = React.useState('');
-  const [location, setLocation] = React.useState('');
-  const [price, setPrice] = React.useState('');
-  const [revised, setRevised] = React.useState('');
-  const [status, setStatus] = React.useState('');
+  const [title, setTitle] = React.useState(data ? data.title : '');
+  const [published, setPublished] = React.useState(data ? data.published : '');
+  const [img, setImg] = React.useState(data ? data.img : '');
+  const [content, setContent] = React.useState(data ? data.content : '');
+  const [location, setLocation] = React.useState(data ? data.author.location : '');
+  const [price, setPrice] = React.useState(data ? data.price : '');
+  const [revised, setRevised] = React.useState(data ? data.revised : '');
+  const [status, setStatus] = React.useState(data ? data.status : '');
 
   const dispatch = useDispatch();
 
+  
   const handleClick = () => {
-    dispatch(addPost({title: title, published: published, content: content, 
-      location: location, price: price, revised: revised, status: status, img: img}));
-    console.log('after action:', img);
-    return (
-      <Redirect to="/" replace={true} />
-    )
-  }
+    if (!data) {
+      dispatch(addPost({title: title, published: published, content: content, 
+        location: location, price: price, revised: revised, status: status, img: img}));
+    } else {
+    dispatch(editPost({title: title, published: published, content: content, 
+      location: location, price: price, revised: revised, status: status, img: img}, data.id));
+    }
+
+  return (
+    <Redirect to="/" replace={true} />
+  )};
 
   return (
     <Box
@@ -54,13 +59,13 @@ export default function MultilineTextFields() {
         <DataPicker action={setPublished} data={published}/>
 
         <UploadButton sx={{ my: 'auto', py: 'auto'}} action={setImg}/>
-
+        
         <TextField
           id="outlined-multiline-flexible2"
           label="Location"
           multiline
           maxRows={4}
-          title={location}
+          value={location}
           onChange={e => {setLocation(e.target.value)}}
         />
         <TextField

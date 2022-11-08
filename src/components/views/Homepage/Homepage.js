@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PostList from '../../features/PostList';
-import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
@@ -45,9 +45,8 @@ const Component = ({className, children}) => {
   console.log('listOfTitles before listComponent:', listOfTitles);
   return (
     <div className={clsx(className, styles.root)}>
-      <h2>Homepage</h2>
       <div>
-        <Link to='/post/add'>Add post</Link>
+        <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button>
       </div> 
         {children}
       <PostList posts={listOfTitles}/>
