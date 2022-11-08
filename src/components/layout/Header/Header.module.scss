@@ -1,4 +1,12 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.root {
+    display: inline-block;
+    background-color: bisque;
+    width: 100%;
+    text-align: center;
+    a {
+        display: inline-block;
+        margin: 20px;
+    }
+}

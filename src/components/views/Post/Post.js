@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SinglePost from '../../features/SinglePost';
 
 import clsx from 'clsx';
 
@@ -10,8 +11,9 @@ import styles from './Post.module.scss';
 
 const Component = ({className, children}) => (
   <div className={clsx(className, styles.root)}>
-    <h2>Post</h2>
+    <h2>Announcement</h2>
     {children}
+    <SinglePost/>
   </div>
 );
 

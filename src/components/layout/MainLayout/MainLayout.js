@@ -7,13 +7,23 @@ import clsx from 'clsx';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './MainLayout.module.scss';
+import { Header } from '../Header/Header';
+import { useSelector } from 'react-redux';
+import { getAuthors } from '../../../redux/authorRedux';
 
-const Component = ({className, children}) => (
-  <div className={clsx(className, styles.root)}>
-    <h2>MainLayout</h2>
-    {children}
-  </div>
-);
+const Component = ({className, children}) => {
+
+  const currentUser = useSelector(getAuthors);
+  
+//JSON.parse(localStorage.getItem('user', 'role'));
+
+    return (
+    <div className={clsx(className, styles.root)}>
+      <Header currentUser={currentUser} />
+      { children }
+    </div>
+  );
+}
 
 Component.propTypes = {
   children: PropTypes.node,
