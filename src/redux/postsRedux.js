@@ -1,7 +1,7 @@
+import shortid from 'shortid';
 /* selectors */
-//import shortid from "shortid";
 export const getAll = ({posts}) => posts.data;
-export const getOnePost = ({posts}, postId) => posts.data.find(post => (post.id === postId));
+export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
 
 /* action name creator */
 const reducerName = 'posts';
@@ -24,7 +24,7 @@ export const editPost = payload => ({payload, type: EDIT_POST})
 /* thunk creators */
 
 /* reducer */
-export const reducer = (statePart = [], action) => {
+export const reducer = (statePart = [], action={}) => {
   switch (action.type) {
     case FETCH_START: {
       return {
@@ -55,10 +55,10 @@ export const reducer = (statePart = [], action) => {
       };
     }
     case EDIT_POST: {
-      return (statePart.map(post => (post.id === action.payload.id ? {...post, ...action.payload} : post)))
+      return (statePart.data.map(post =>(post.id === action.payload.id ? {...post, ...action.payload} : post)))
     }
     case ADD_POST: {
-      return [ ...statePart, action.payload ];
+      return [ ...statePart.data, {...action.payload, id: shortid.generate() } ];
     }
     default:
       return statePart;

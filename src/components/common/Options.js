@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import shortid from 'shortid';
 
 const statuses = [
   {
@@ -28,7 +27,6 @@ export default function SelectTextFields() {
 
   return (
     <Box
-      component="form"
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
       }}
@@ -45,7 +43,7 @@ export default function SelectTextFields() {
           helperText="Select annoncement state"
         >
           {statuses.map((option) => (
-            <MenuItem key={shortid} value={option.value}>
+            <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
           ))}

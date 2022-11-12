@@ -16,7 +16,8 @@ const Component = ({className, children}) =>{
   
   const { id } = useParams();
   const postToEdit = useSelector(posts => getOnePost(posts, id));
-
+  console.log('postToEdit', postToEdit);
+  
   return (
   <div className={clsx(className, styles.root)}>
     <h2>Edit post:</h2>

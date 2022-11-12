@@ -7,8 +7,7 @@ import Options from '../common/Options';
 import UploadButton from '../common/UploadButton';
 import { useDispatch } from 'react-redux';
 import { addPost, editPost } from '../../redux/postsRedux';
-import { Redirect } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 export default function MultilineTextFields({data}) {
 
@@ -20,28 +19,29 @@ export default function MultilineTextFields({data}) {
   const [price, setPrice] = React.useState(data ? data.price : '');
   const [revised, setRevised] = React.useState(data ? data.revised : '');
   const [status, setStatus] = React.useState(data ? data.status : '');
+  const [ id ] = React.useState(data ? data.id : '')
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  console.log('revised', published);
   
-  const handleClick = () => {
+  const handleClick = (e) => {
+
     if (!data) {
       dispatch(addPost({title: title, published: published, content: content, 
         location: location, price: price, revised: revised, status: status, img: img}));
     } else {
     dispatch(editPost({title: title, published: published, content: content, 
-      location: location, price: price, revised: revised, status: status, img: img}, data.id));
+      location: location, price: price, revised: revised, status: status, img: img, id: id}));
     }
-
-  return (
-    <Redirect to="/" replace={true} />
-  )};
+    navigate("/");
+  };
 
   return (
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '80ch' },
+        '& .MuiTextField-root': { m: 1, width: '80vh' },
       }}
       noValidate
       autoComplete="off"
@@ -56,11 +56,12 @@ export default function MultilineTextFields({data}) {
           onChange={e =>{setTitle(e.target.value)}}
         />
 
-        <DataPicker action={setPublished} data={published}/>
+        <DataPicker action={setPublished} data={published} text={'Published'}/>
 
         <UploadButton sx={{ my: 'auto', py: 'auto'}} action={setImg}/>
         
         <TextField
+          sx={{ maxWidth: '150px' }}
           id="outlined-multiline-flexible2"
           label="Location"
           multiline
@@ -69,15 +70,16 @@ export default function MultilineTextFields({data}) {
           onChange={e => {setLocation(e.target.value)}}
         />
         <TextField
+          sx={{ maxWidth: '150px' }}
           id="outlined-multiline-flexible3"
-          label="Price"
+          label="Price $"
           multiline
           maxRows={4}
           value={price}
           onChange={e => {setPrice(e.target.value)}}
         />
 
-        <DataPicker action={setRevised} data={revised}/>
+        <DataPicker action={setRevised} data={revised} text={'Revised'}/>
 
         <Options action={setStatus}/>
 

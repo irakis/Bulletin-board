@@ -9,9 +9,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import shortid from 'shortid';
-
-
 
 function ResponsiveAppBar({links}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -77,7 +74,7 @@ function ResponsiveAppBar({links}) {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={shortid} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><a href={page.href}>{page.text}</a></Typography>
                 </MenuItem>
               ))}
@@ -104,7 +101,7 @@ function ResponsiveAppBar({links}) {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={shortid}
+                key={page.text}
                 href={page.href}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}

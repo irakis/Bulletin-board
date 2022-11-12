@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+//import { Routes ,Route } from 'react-router-dom';
 
 import { createTheme, StylesProvider, ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
@@ -22,19 +23,19 @@ const theme = createTheme({
 
 const App = () => (
   <Provider store={store}>
-    <Router>
+    <Router forceRefresh={true} >
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-            <MainLayout>
-              <Switch>
-                <Route exact path='/' component={Homepage} />
-                <Route exact path='/post/add' component={PostAdd} />
-                <Route exact path='/post/:id' component={Post} />
-                <Route exact path='/post/:id/edit' component={PostEdit} />
-                <Route path='*' component={NotFound} />
-              </Switch>
-            </MainLayout>
+          <MainLayout>
+            <Routes>
+              <Route exact path='/' element={<Homepage/>} />
+              <Route exact path='/post/add' element={<PostAdd/>} />
+              <Route exact path='/post/:id' element={<Post/>} />
+              <Route exact path='/post/:id/edit' element={<PostEdit/>} />
+              <Route path='*' element={<NotFound/>} />
+            </Routes>
+          </MainLayout>
         </ThemeProvider>
       </StylesProvider>
     </Router>

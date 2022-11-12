@@ -13,22 +13,22 @@ import { getAll } from '../../../redux/postsRedux';
 import styles from './Homepage.module.scss';
 
 const Component = ({className, children}) => {
-
+  
   const allPosts = useSelector(getAll);
-  console.log('allPosts: ', allPosts);
-
+  console.log('allPost w Homepage: ',allPosts);
   const currentUser = useSelector(getAuthors);
-  console.log('Home user : ', currentUser.role);
+  console.log('cirrentUser w Homepage: ',currentUser);
 
   const [ listOfTitles, setListOfTitles ] = useState([])
+  console.log('listOfTitles', listOfTitles);
 
   useEffect(()=>{
 
     if(currentUser.role === 'admin') {
       setListOfTitles(allPosts);
+      console.log(listOfTitles);
     } else if(currentUser.role === 'user') {
       setListOfTitles(allPosts.filter(post => post.author.email === currentUser.email));
-      console.log('listOfTitles: ',listOfTitles);
     } else {
       let listOfTitlesForEmptyUser = []
       for(let index=0; index < allPosts.length; index++) {
@@ -36,15 +36,12 @@ const Component = ({className, children}) => {
           title: allPosts[index].title,
         });
       }
-      console.log(listOfTitlesForEmptyUser);
-    //setListOfTitles(listOfTitlesForEmptyUser);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('listOfTitles before listComponent:', listOfTitles);
   return (
-    <div className={clsx(className, styles.root)}>
+    <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
       <div>
         <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button>
       </div> 

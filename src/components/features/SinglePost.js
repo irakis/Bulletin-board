@@ -9,20 +9,18 @@ import { getOnePost } from '../../redux/postsRedux';
 import { useSelector } from 'react-redux';
 
 export default function RecipeReviewCard() {
-  let { id } = useParams();
-  console.log('post id???', id)
+  const { id } = useParams();
   const post = useSelector(posts => getOnePost(posts, id));  
-  console.log('singlePost: ', post);
 
   return (
-    <Card sx={{ margin: 3, width: '75%', mx: 'auto'}}>
+    <Card sx={{ margin: 3, width: '75%', mx: 'auto', maxHeight: 800}}>
       <CardHeader
         title={post.title}
         subheader={post.published + ' , ' + post.author.email}
       />
       <CardMedia
         component="img"
-        height="194"
+        height="440"
         image= {post.img}
         alt="annoucement picture"
       />

@@ -9,7 +9,7 @@ export default function UploadButtons({action}) {
       <Button variant="contained" component="label">
         Upload picture
         <input hidden id="uploadInput" accept="image/*" multiple type="file" 
-          onChange={action(document.getElementById("uploadInput"))}/>
+          onChange={(e)=> action(()=> e.target.files[0].name)}/>
       </Button>
     </Stack>
   );

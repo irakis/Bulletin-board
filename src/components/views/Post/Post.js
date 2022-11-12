@@ -11,17 +11,18 @@ import clsx from 'clsx';
 
 import styles from './Post.module.scss';
 
-const Component = ({className, children}) => {
-  const { id } = useParams();
-  
-  return (
-  <div className={clsx(className, styles.root)}>
-    <h2>Announcement</h2>
-    {children}
-    <SinglePost/>
-    <Button variant="outlined" href={`${id}/edit`}>Edit</Button>
-  </div>
-)};
+  const Component = ({className, children}) => {
+    const { id } = useParams();
+    
+    return (
+    <div className={clsx(className, styles.root)}>
+      <h2>Announcement</h2>
+      {children}
+      <SinglePost/>
+      <Button variant="outlined" href={`${id}/edit`}>Edit</Button>
+    </div>
+  );
+};
 
 Component.propTypes = {
   children: PropTypes.node,
