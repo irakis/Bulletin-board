@@ -8,6 +8,7 @@ import clsx from 'clsx';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Header.module.scss';
+import { LoginForm } from '../../common/LoginForm';
 
 const Component = ({ className, currentUser }) => {
   
@@ -15,14 +16,21 @@ const Component = ({ className, currentUser }) => {
   
   if (currentUser.role === ('admin' || 'user')) {
     links = [{text: 'Announcements', href: '/'}, {text: 'Logout', href: '/logout'}]  
+    return (
+      <div className={clsx(className, styles.root)}>
+        <AppBar links={links}/>
+      </div>
+    )
   } else {
-    links = [{ text: 'Login', href:  'https://google.com'}]
+    links = [{ text: 'Login', href: '/login'}]
+    return (
+      <div className={clsx(className, styles.root)}>
+        <AppBar links={links}/>
+      </div>
+    )
+
   }
-  return (
-    <div className={clsx(className, styles.root)}>
-      <AppBar links={links}/>
-    </div>
-  )
+ 
 };
 Component.defaultProps = { 
   currentUser: ''

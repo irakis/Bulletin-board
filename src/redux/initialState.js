@@ -12,5 +12,5 @@ export const initialState = {
       error: false,
     },
   },
-  authors:  { email: 'a1@a1.org' , isLogged: false, role: 'admin' },
+  authors:  { email: 'a1@a1.org' , isLogged: false, role: '' },
 };

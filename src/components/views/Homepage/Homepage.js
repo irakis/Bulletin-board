@@ -39,17 +39,29 @@ const Component = ({className, children}) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  return (
-    <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
-      <div>
-        <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button>
-      </div> 
-        {children}
-      <PostList posts={listOfTitles}/>
-    </div>
-  )
-  };
+  if (currentUser.role !== '') {
+    return (
+      <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
+        <div>
+          <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button>
+        </div> 
+          {children}
+        <PostList posts={listOfTitles}/>
+      </div>
+      )
+  } else {
+    return (
+      <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
+        <div>
+        </div> 
+          {children}
+        <div>
+          <h1>Login please</h1>
+        </div>
+      </div>
+    )
+  }
+};
 
 Component.propTypes = {
   children: PropTypes.node,
