@@ -8,21 +8,20 @@ import clsx from 'clsx';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Header.module.scss';
-import { LoginForm } from '../../common/LoginForm';
 
 const Component = ({ className, currentUser }) => {
   
   let links;
   
   if (currentUser.role === ('admin' || 'user')) {
-    links = [{text: 'Announcements', href: '/'}, {text: 'Logout', href: '/logout'}]  
+    links = [{text: 'Announcements', href: '/'}, {text: 'Logout', href: '/logout'},{ text: 'Login', href: '/auth/google'}]  
     return (
       <div className={clsx(className, styles.root)}>
         <AppBar links={links}/>
       </div>
     )
   } else {
-    links = [{ text: 'Login', href: '/login'}]
+    links = [{ text: 'Login', href: '/auth/google'}]
     return (
       <div className={clsx(className, styles.root)}>
         <AppBar links={links}/>

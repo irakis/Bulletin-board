@@ -6,24 +6,15 @@ import clsx from 'clsx';
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
-import styles from './MainLayout.module.scss';
-import { Header } from '../Header/Header';
-import { useSelector } from 'react-redux';
-import { getLoggedAuthor } from '../../../redux/authorRedux';
+import styles from './NoPermission.module.scss';
 
-const Component = ({className, children}) => {
-
-  const currentUser = useSelector(getLoggedAuthor);
-  
-//JSON.parse(localStorage.getItem('user', 'role'));
-
-    return (
-    <div className={clsx(className, styles.root)}>
-      <Header currentUser={currentUser} />
-      { children }
-    </div>
-  );
-}
+const Component = ({className, children}) => (
+  <div className={clsx(className, styles.root)}>
+    <h2>Authentication failed</h2>
+    <h2>Acces denied</h2>
+    {children}
+  </div>
+);
 
 Component.propTypes = {
   children: PropTypes.node,
@@ -41,7 +32,6 @@ Component.propTypes = {
 // const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as MainLayout,
-  // Container as MainLayout,
-  Component as MainLayoutComponent,
+  Component as NoPermission,
+  //Component as NotPermissionComponent,
 };

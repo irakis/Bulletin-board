@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-//import { Routes ,Route } from 'react-router-dom';
 
 import { createTheme, StylesProvider, ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
@@ -14,7 +13,8 @@ import { Post } from './components/views/Post/Post';
 import { PostEdit } from './components/views/PostEdit/PostEdit';
 import { PostAdd } from './components/views/PostAdd/PostAdd';
 import { NotFound } from './components/views/NotFound/NotFound';
-import { LoginForm } from './components/common/LoginForm';
+import { NoPermission } from './components/views/NoPermission/NoPermission';
+import { Logged } from './components/views/Logged/Logged';
 
 const theme = createTheme({
   palette: {
@@ -34,7 +34,8 @@ const App = () => (
               <Route exact path='/post/add' element={<PostAdd/>} />
               <Route exact path='/post/:id' element={<Post/>} />
               <Route exact path='/post/:id/edit' element={<PostEdit/>} />
-              <Route exact path='/login' element={<LoginForm/>} />
+              <Route exact path='/post/nopermission' element={<NoPermission/>} />
+              <Route exact path='/login/author' element={<Logged/>} />
               <Route path='*' element={<NotFound/>} />
             </Routes>
           </MainLayout>

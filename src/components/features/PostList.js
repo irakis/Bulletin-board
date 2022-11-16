@@ -6,24 +6,51 @@ import Button from '@mui/material/Button';
 
 export default function TitlebarBelowImageList({posts}) {
 
-  return (
-    <ImageList sx={{ margin: 4 }}>
-      {posts.map((item) => (
-        <ImageListItem key={item.title} sx={{ margin: 2}}>
-          <img
-            src={`${item.img}?w=248&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.title}
-            loading="lazy"
-          />
-          <ImageListItemBar
-            title={item.title}
-            subtitle={<span>author: {item.author.email}, price: {item.price}</span>}
-            position="below"
-          />
-          <Button variant="contained" href={`/post/${item.id}`}>See more</Button>
-        </ImageListItem>
-      ))}
-    </ImageList>
-  );
+  console.log('postList:', posts);
+
+  const onlyTitleList = (posts) => {
+    return (
+      <ImageList sx={{ margin: 4 }}>
+        {posts.map((item) => (
+          <ImageListItem key={item.title} sx={{ margin: 2}}>
+            <></>
+            <ImageListItemBar
+              title={item.title}
+              subtitle={<span>author: '', price: ''</span>}
+              position="below"
+            />
+          </ImageListItem>
+        ))}
+      </ImageList>
+    );
+  };
+
+  const userTitleList = (posts) => {
+    return (
+      <ImageList sx={{ margin: 4 }}>
+        {posts.map((item) => (
+          <ImageListItem key={item.title} sx={{ margin: 2}}>
+            <img
+              src={`${item.img}?w=248&fit=crop&auto=format`}
+              srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+              alt={item.title}
+              loading="lazy"
+            />
+            <ImageListItemBar
+              title={item.title}
+              subtitle={<span>author: {item.author.email}, price: {item.price}</span>}
+              position="below"
+            />
+            <Button variant="contained" href={`/post/${item.id}`}>See more</Button>
+          </ImageListItem>
+        ))}
+      </ImageList>
+    );
+  }
+
+  if (!posts[0].author) {
+    return (onlyTitleList(posts));
+  } else {
+    return (userTitleList(posts));
+  }
 }

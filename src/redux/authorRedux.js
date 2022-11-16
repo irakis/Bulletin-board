@@ -1,5 +1,6 @@
 /* selectors */
 export const getAuthors = ({authors}) => authors;
+export const getLoggedAuthor = ({authors}) => (authors.find(author => (author.isLogged === true)));
 
 /* action name creator */
 const reducerName = 'authors';

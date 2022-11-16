@@ -2,10 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session')
+const passportConfig = require('./config/passport');
 
 const postsRoutes = require('./routes/posts.routes');
 
 const app = express();
+
+// init session mechanism
+app.use(session({ secret: 'secretsessionkey112', resave: false, saveUninitialized: true }));
+
+// init passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 /* MIDDLEWARE */
 app.use(cors());
@@ -14,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 
 /* API ENDPOINTS */
 app.use('/api', postsRoutes);
+app.use('/auth', require('./routes/auth.routes'));
 
 /* API ERROR PAGES */
 app.use('/api', (req, res) => {
@@ -21,10 +32,10 @@ app.use('/api', (req, res) => {
 });
 
 /* REACT WEBSITE */
-//app.use(express.static(path.join(__dirname, '../build')));
-//app.use('*', (req, res) => {
-//  res.sendFile(path.join(__dirname, '../build/index.html'));
-//});
+app.use(express.static(path.join(__dirname, '../build')));
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+});
 
 /* MONGOOSE */
 mongoose.connect('mongodb://localhost:27017/Bulletin-board', { useNewUrlParser: true, useUnifiedTopology: true });
