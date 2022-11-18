@@ -13,6 +13,7 @@ export default function MaterialUIPickers({data, text, action}) {
 
   const [value, setValue] = useState(dayjs(data ? data : (new Date())));
 
+  // eslint-disable-next-line
   useEffect(()=>action(value), []);
   
   const handleChange = (newValue) => {

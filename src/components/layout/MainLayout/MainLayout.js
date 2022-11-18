@@ -14,6 +14,7 @@ import { getLoggedAuthor } from '../../../redux/authorRedux';
 const Component = ({className, children}) => {
 
   const currentUser = useSelector(getLoggedAuthor);
+  console.log('mainLayout user:', currentUser);
   
 //JSON.parse(localStorage.getItem('user', 'role'));
 

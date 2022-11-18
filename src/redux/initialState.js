@@ -13,8 +13,9 @@ export const initialState = {
     },
   },
   authors:  [
-    { email: 'a1@a1.org' , phone: '2345643', location: 'Rio', isLogged: true, role: 'admin' },
+    { email: 'a1@a1.org' , phone: '2345643', location: 'Rio', isLogged: false, role: 'admin' },
     { email: 'a2@a2.org' , phone: '2345553', location: 'LV', isLogged: false, role: 'user' },
-    { email: 'a3@a3.org' , phone: '2377643', location: 'Vegas', isLogged: false, role: 'user' }
+    { email: 'a3@a3.org' , phone: '2377643', location: 'Vegas', isLogged: false, role: 'user'},
+    { email: 'ireneuszwyszomirski44@gmail.com' , phone: '9945643', location: 'LUB', isLogged: false, role: 'admin' }
   ],
 };

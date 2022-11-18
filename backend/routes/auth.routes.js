@@ -9,12 +9,19 @@ router.get('/google',
 
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/post/nopermission' }),
-  (req, res) => { console.log(req.user.emails[0].value, req.sessionID),
-    
-    router.put('/login/author', AuthorController.loginAuthor);
-    res.redirect('/login/author')
-    //res.redirect('/');
+  (req, res) => {
+    //console.log('res.email???', req.user)
+    res.redirect('/login/author');
+    router.put('/login/author', AuthorController.loginAuthor);  
   }
 );
+
+router.get('/logout', (req, res) => { 
+  req.session.destroy((err) => {
+    res.json({message: err})
+  })
+});
+
+
 
 module.exports = router;

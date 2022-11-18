@@ -3,7 +3,8 @@ const Author = require('../models/author.model');
 exports.loginAuthor = async (req, res)=> {
     try {
         const authorEmail = req.user.emails[0].value;
-        console.log('authorEmail: ', authorEmail);
+        console.log('authorEmail????: ', authorEmail);
+        localStorage.setItem('currenUserEmail', authorEmail)
 
         const sessionKey = req.sessionID;
         console.log('sessionKey: ', sessionKey);

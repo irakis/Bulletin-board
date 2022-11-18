@@ -3,6 +3,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Button from '@mui/material/Button';
+import styles from './PostList.module.scss';
 
 export default function TitlebarBelowImageList({posts}) {
 
@@ -10,13 +11,12 @@ export default function TitlebarBelowImageList({posts}) {
 
   const onlyTitleList = (posts) => {
     return (
-      <ImageList sx={{ margin: 4 }}>
+      <ImageList className={styles.root}>
         {posts.map((item) => (
           <ImageListItem key={item.title} sx={{ margin: 2}}>
-            <></>
-            <ImageListItemBar
+            <p></p>
+            <ImageListItemBar className={styles.root}
               title={item.title}
-              subtitle={<span>author: '', price: ''</span>}
               position="below"
             />
           </ImageListItem>

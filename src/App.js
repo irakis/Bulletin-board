@@ -15,6 +15,7 @@ import { PostAdd } from './components/views/PostAdd/PostAdd';
 import { NotFound } from './components/views/NotFound/NotFound';
 import { NoPermission } from './components/views/NoPermission/NoPermission';
 import { Logged } from './components/views/Logged/Logged';
+import { Logout } from './components/views/Logout/Logout';
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ const App = () => (
               <Route exact path='/post/:id/edit' element={<PostEdit/>} />
               <Route exact path='/post/nopermission' element={<NoPermission/>} />
               <Route exact path='/login/author' element={<Logged/>} />
+              <Route exact path='/logout' element={<Logout/>} />
               <Route path='*' element={<NotFound/>} />
             </Routes>
           </MainLayout>

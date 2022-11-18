@@ -1,30 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import PostList from '../../features/PostList';
 import Button from '@mui/material/Button';
+import { SimpleList } from '../../features/SimpleList';
 
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { getLoggedAuthor } from '../../../redux/authorRedux';
 import { getAll } from '../../../redux/postsRedux';
+import { getLoggedAuthor } from '../../../redux/authorRedux';
+
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Logged.module.scss';
 
 const Component = ({className, children}) => {
+
+  const currentUserEmail = window.localStorage.getItem('currnetUserEmail');
+  console.log('currneUserEmail w Logged:', currentUserEmail)
   
   const allPosts = useSelector(getAll);
-  console.log('allPost w logged: ',allPosts);
+  let listOfTitles = [];
+
   const currentUser = useSelector(getLoggedAuthor);
+  console.log('user w logged: ', currentUser);
+  console.log('allposts w logged:', allPosts);
+
+  if (currentUser && currentUser.role === 'admin') {
+    listOfTitles = allPosts;
+  } else if (currentUser && currentUser.role === 'user') {
+    listOfTitles = allPosts.filter( post => post.email === currentUser.email);
+  } else if (currentUser === undefined){
+    
+    // eslint-disable-next-line
+    allPosts.map((post) => {listOfTitles.push({title: post.title})})
+  }
+     
+  console.log('listOfTitles', listOfTitles);
 
     return (
       <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
         <div>
-          <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button>
+        {(currentUser !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button> : null}
         </div> 
           {children}
-        <PostList posts={allPosts}/>
+          {(currentUser !== undefined) ? <PostList posts={listOfTitles}/> : <SimpleList posts={listOfTitles}/>}
       </div>
       )
 };

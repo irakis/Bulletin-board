@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 /* selectors */
-export const getAll = ({posts}) => posts.data;
+export const getAll = ({posts}) => posts.data.filter(post => post.status == 'published');
 export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
 
 /* action name creator */

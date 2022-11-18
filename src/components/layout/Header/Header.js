@@ -10,18 +10,19 @@ import clsx from 'clsx';
 import styles from './Header.module.scss';
 
 const Component = ({ className, currentUser }) => {
-  
+  console.log('heder user: ', currentUser.role)
   let links;
   
   if (currentUser.role === ('admin' || 'user')) {
-    links = [{text: 'Announcements', href: '/'}, {text: 'Logout', href: '/logout'},{ text: 'Login', href: '/auth/google'}]  
+    links = [{text: 'Announcements', href: '/'}, {text: 'Logout', href: '/logout'}]  
     return (
       <div className={clsx(className, styles.root)}>
         <AppBar links={links}/>
       </div>
     )
-  } else {
+  } else if (currentUser.role === undefined){
     links = [{ text: 'Login', href: '/auth/google'}]
+
     return (
       <div className={clsx(className, styles.root)}>
         <AppBar links={links}/>
