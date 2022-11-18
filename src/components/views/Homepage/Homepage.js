@@ -7,15 +7,18 @@ import { useSelector } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux';
 import { getLoggedAuthor } from '../../../redux/authorRedux';
 import { SimpleList } from '../../features/SimpleList';
+import { fetchPublished } from '../../../redux/postsRedux';
 //import PostList from '../../features/PostList';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Homepage.module.scss';
 
 const Component = ({className, children}) => {
 
-  const allPosts = useSelector(getAll);
+
+  //const allPosts = useSelector(getAll);
+  
   let listOfTitles = [];
 
   const currentUser = useSelector(getLoggedAuthor);
@@ -26,8 +29,7 @@ const Component = ({className, children}) => {
     listOfTitles = allPosts;
   } else if (currentUser && currentUser.role === 'user') {
     listOfTitles = allPosts.filter( post => post.email === currentUser.email);
-  } else if (currentUser === undefined){
-    
+  } else if (currentUser === undefined) {
     // eslint-disable-next-line
     allPosts.map((post) => {listOfTitles.push({title: post.title})})
   }
@@ -49,18 +51,19 @@ Component.propTypes = {
   className: PropTypes.string,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = (state, allPosts) => ({
+  allPosts : getAll(state),
+});
+console.log('allPosts: ', allPosts);
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = dispatch => ({
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as Homepage,
-  // Container as Homepage,
+  //Component as Homepage,
+  Container as Homepage,
   Component as HomepageComponent,
 };

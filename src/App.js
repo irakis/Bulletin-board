@@ -16,12 +16,15 @@ import { NotFound } from './components/views/NotFound/NotFound';
 import { NoPermission } from './components/views/NoPermission/NoPermission';
 import { Logged } from './components/views/Logged/Logged';
 import { Logout } from './components/views/Logout/Logout';
+import { fetchPublished } from './redux/postsRedux';
 
 const theme = createTheme({
   palette: {
     primary: { main: '#2B4C6F' },
   }
 });
+
+store.dispatch(fetchPublished());
 
 const App = () => (
   <Provider store={store}>
