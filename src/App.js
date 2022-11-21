@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
@@ -24,9 +24,13 @@ const theme = createTheme({
   }
 });
 
-store.dispatch(fetchPublished());
 
-const App = () => (
+const App = () =>{ 
+  
+  useEffect(()=>{
+    store.dispatch(fetchPublished())},[])
+  return (
+
   <Provider store={store}>
     <Router forceRefresh={true} >
       <StylesProvider injectFirst>
@@ -48,6 +52,6 @@ const App = () => (
       </StylesProvider>
     </Router>
   </Provider>
-);
+)};
 
 export { App };

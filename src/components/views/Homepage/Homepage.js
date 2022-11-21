@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 //import PostList from '../../features/PostList';
 
@@ -14,34 +14,17 @@ import { connect } from 'react-redux';
 
 import styles from './Homepage.module.scss';
 
-const Component = ({className, children}) => {
+const Component = ({className, allPosts ,children}) => {
+console.log('allPosts:', allPosts);
+
+const [listOfTitles, setListOfTitles] = useState();
 
 
-  //const allPosts = useSelector(getAll);
-  
-  let listOfTitles = [];
-
-  const currentUser = useSelector(getLoggedAuthor);
-  console.log('user w homepage: ', currentUser);
-  console.log('allposts w homepage:', allPosts);
-
-  if (currentUser && currentUser.role === 'admin') {
-    listOfTitles = allPosts;
-  } else if (currentUser && currentUser.role === 'user') {
-    listOfTitles = allPosts.filter( post => post.email === currentUser.email);
-  } else if (currentUser === undefined) {
-    // eslint-disable-next-line
-    allPosts.map((post) => {listOfTitles.push({title: post.title})})
-  }
-   
-    
-  console.log('listOfTitles', listOfTitles);
-  
   return (
     <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
         {children}
       {/*{(currentUser && currentUser.role === ('admin' || 'user')) ? <PostList posts={listOfTitles}/> : null}*/}
-      <SimpleList posts={listOfTitles}/>
+      <SimpleList posts={allPosts}/>
     </div>
     );
 };
@@ -51,10 +34,9 @@ Component.propTypes = {
   className: PropTypes.string,
 };
 
-const mapStateToProps = (state, allPosts) => ({
+const mapStateToProps = (state) => ({
   allPosts : getAll(state),
 });
-console.log('allPosts: ', allPosts);
 
 const mapDispatchToProps = dispatch => ({
   fetchPublishedPosts: () => dispatch(fetchPublished()),
