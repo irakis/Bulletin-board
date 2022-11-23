@@ -1,8 +1,10 @@
 import shortid from 'shortid';
 import Axios from 'axios';
 /* selectors */
-export const getAll = ({posts}) => posts.data.filter(post => post.status === 'published');
-export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
+
+export const getAll = (state) => {console.log('gatAll datas:',state.datas); return (state.datas)};
+//.filter(post => post.status === 'published');
+export const getOnePost = ({datas}, id) => datas.find(post => (post.id === id));
 
 /* action name creator */
 const reducerName = 'posts';
@@ -24,13 +26,14 @@ export const editPost = payload => ({payload, type: EDIT_POST})
 
 /* thunk creators */
 export const fetchPublished = () => {
-  return (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(fetchStarted());
+    console.log('axiost starts!!:');
 
-    Axios
+   await Axios
       .get('http://localhost:8000/api/posts')
       .then(res => {
-        console.log('axios res: ',res);
+        console.log('axios res:', res.data);
         dispatch(fetchSuccess(res.data));
       })
       .catch(err => {
@@ -39,8 +42,14 @@ export const fetchPublished = () => {
   };
 };
 
+/*Initial state*/
+
+const initialState = [];
+
+
 /* reducer */
-export const reducer = (statePart = [], action={}) => {
+export const reducer = (statePart = initialState, action={}) => {
+  console.log('action.payload1:', action.payload);
   switch (action.type) {
     case FETCH_START: {
       return {
@@ -58,7 +67,7 @@ export const reducer = (statePart = [], action={}) => {
           active: false,
           error: false,
         },
-        data: action.payload,
+        ...action.payload
       };
     }
     case FETCH_ERROR: {
@@ -71,10 +80,10 @@ export const reducer = (statePart = [], action={}) => {
       };
     }
     case EDIT_POST: {
-      return (statePart.data.map(post =>(post.id === action.payload.id ? {...post, ...action.payload} : post)))
+      return (statePart.map(post =>(post.id === action.payload.id ? {...post, ...action.payload} : post)))
     }
     case ADD_POST: {
-      return [ ...statePart.data, {...action.payload, id: shortid.generate() } ];
+      return [ ...statePart, {...action.payload, id: shortid.generate() } ];
     }
     default:
       return statePart;

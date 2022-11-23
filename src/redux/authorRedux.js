@@ -1,3 +1,4 @@
+import Axios from 'axios';
 /* selectors */
 export const getAuthors = ({authors}) => authors;
 export const getLoggedAuthor = ({authors}) => (authors.find(author => (author.isLogged === true)));
@@ -24,8 +25,30 @@ export const logoutAuthor = payload => ({ payload, type: AUTHOR_OUT });
 
 /* thunk creators */
 
+export const fetchPublishedAuthors = () => {
+  return async (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    await Axios
+      .get('http://localhost:8000/api/posts')
+      .then(res => {
+        console.log('axios res: ',res);
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
+/*Initial state*/
+
+const initialState = {
+  authors: []
+};
+
 /* reducer */
-export const reducer = (statePart = [], action = {}) => {
+export const reducer = (statePart = initialState.authors, action = {}) => {
   switch (action.type) {
     case FETCH_START: {
       return {
@@ -43,7 +66,7 @@ export const reducer = (statePart = [], action = {}) => {
           active: false,
           error: false,
         },
-        data: action.payload,
+        ...action.payload,
       };
     }
     case FETCH_ERROR: {

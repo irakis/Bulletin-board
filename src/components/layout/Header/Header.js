@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import styles from './Header.module.scss';
 
 const Component = ({ className, currentUser }) => {
-  console.log('heder user: ', currentUser.role)
+  //console.log('heder user: ', currentUser.role)
   let links;
   
   if (currentUser.role === ('admin' || 'user')) {
@@ -28,9 +28,7 @@ const Component = ({ className, currentUser }) => {
         <AppBar links={links}/>
       </div>
     )
-
   }
- 
 };
 Component.defaultProps = { 
   currentUser: ''

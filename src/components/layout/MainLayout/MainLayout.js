@@ -8,16 +8,15 @@ import clsx from 'clsx';
 
 import styles from './MainLayout.module.scss';
 import { Header } from '../Header/Header';
-import { useSelector } from 'react-redux';
-import { getLoggedAuthor } from '../../../redux/authorRedux';
+//import { useSelector } from 'react-redux';
+//import { getLoggedAuthor } from '../../../redux/authorRedux';
 
 const Component = ({className, children}) => {
 
-  const currentUser = useSelector(getLoggedAuthor);
-  console.log('mainLayout user:', currentUser);
+  const currentUser = { email: 'a1@a1.org' , phone: '2345643', location: 'Rio', isLogged: true, role: 'admin' }
   
-//JSON.parse(localStorage.getItem('user', 'role'));
-
+  //useSelector(getLoggedAuthor);
+  
     return (
     <div className={clsx(className, styles.root)}>
       <Header currentUser={currentUser} />

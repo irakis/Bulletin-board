@@ -18,6 +18,7 @@ import { Logged } from './components/views/Logged/Logged';
 import { Logout } from './components/views/Logout/Logout';
 import { fetchPublished } from './redux/postsRedux';
 
+
 const theme = createTheme({
   palette: {
     primary: { main: '#2B4C6F' },
@@ -25,12 +26,9 @@ const theme = createTheme({
 });
 
 
-const App = () =>{ 
+const App = () =>{
   
-  useEffect(()=>{
-    store.dispatch(fetchPublished())},[])
   return (
-
   <Provider store={store}>
     <Router forceRefresh={true} >
       <StylesProvider injectFirst>
@@ -52,6 +50,7 @@ const App = () =>{
       </StylesProvider>
     </Router>
   </Provider>
-)};
+  )
+};
 
 export { App };
