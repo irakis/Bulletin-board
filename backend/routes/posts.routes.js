@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const Data = require('../models/post.model');
+const Post = require('../models/post.model');
 
 router.get('/posts', async (req, res) => {
   try {
-    const result = await Data
+    const result = await Post
       .find({status: 'published' })
       .select('author published title img')
       .sort({published: -1});
@@ -19,7 +19,7 @@ router.get('/posts', async (req, res) => {
 
 router.get('/posts/:id', async (req, res) => {
   try {
-    const result = await Data
+    const result = await Post
       .findById(req.params.id);
     if(!result) res.status(404).json({ post: 'Not found' });
     else res.json(result);

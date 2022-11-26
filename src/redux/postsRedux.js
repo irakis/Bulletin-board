@@ -2,9 +2,9 @@ import shortid from 'shortid';
 import Axios from 'axios';
 /* selectors */
 
-export const getAll = (state) => {console.log('gatAll datas:',state.datas); return (state.datas)};
+export const getAll = ({posts}) => {console.log('gatAll posts:',posts.data); return (posts.data)};
 //.filter(post => post.status === 'published');
-export const getOnePost = ({datas}, id) => datas.find(post => (post.id === id));
+export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
 
 /* action name creator */
 const reducerName = 'posts';
@@ -44,12 +44,15 @@ export const fetchPublished = () => {
 
 /*Initial state*/
 
-const initialState = [];
+const initialState = {
+  data: []
+};
 
 
 /* reducer */
 export const reducer = (statePart = initialState, action={}) => {
-  console.log('action.payload1:', action.payload);
+  console.log('action.payload:', action.payload);
+  console.log('statepart:', statePart);
   switch (action.type) {
     case FETCH_START: {
       return {
@@ -67,7 +70,7 @@ export const reducer = (statePart = initialState, action={}) => {
           active: false,
           error: false,
         },
-        ...action.payload
+        data: [...action.payload]
       };
     }
     case FETCH_ERROR: {

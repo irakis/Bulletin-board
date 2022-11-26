@@ -25,8 +25,8 @@ const Component = ({className ,children}) => {
  const allPosts = useSelector(getAll); 
 
   console.log('allPosts:', allPosts);
-  const [listOfTitles, setListOfTitles] = useState(allPosts);
-  console.log('listofTitled:', listOfTitles);
+  //const [listOfTitles, setListOfTitles] = useState(allPosts);
+  //console.log('listofTitled:', listOfTitles);
 
 
   return (

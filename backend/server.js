@@ -7,6 +7,7 @@ const session = require('express-session')
 const passportConfig = require('./config/passport');
 
 const postsRoutes = require('./routes/posts.routes');
+const authorsRoutes = require('./routes/author.routes');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 /* API ENDPOINTS */
 app.use('/api', postsRoutes);
+app.use('/api', authorsRoutes)
 app.use('/auth', require('./routes/auth.routes'));
 
 /* API ERROR PAGES */
@@ -33,6 +35,7 @@ app.use('/api', (req, res) => {
 
 /* REACT WEBSITE */
 app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });

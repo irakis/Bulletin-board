@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 
 import { createTheme, StylesProvider, ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
-
 import { store } from './redux/store';
 
 import { MainLayout } from './components/layout/MainLayout/MainLayout';
@@ -25,8 +24,12 @@ const theme = createTheme({
   }
 });
 
-
 const App = () =>{
+  
+  useEffect(()=>{
+    console.log('app dispatch fired!!')
+    store.dispatch(fetchPublished());
+  },[])
   
   return (
   <Provider store={store}>
