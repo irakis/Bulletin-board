@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux';
-import { getLoggedAuthor } from '../../../redux/authorRedux';
+import { fetchPublishedAuthors, getLoggedAuthor } from '../../../redux/authorRedux';
 import { SimpleList } from '../../features/SimpleList';
 import { fetchPublished } from '../../../redux/postsRedux';
 //import PostList from '../../features/PostList';
@@ -20,7 +20,11 @@ const Component = ({className ,children}) => {
 
   useEffect(()=>{console.log('homepage dispatch!!:');
     dispatch(fetchPublished());
+    dispatch(fetchPublishedAuthors());
   }, [dispatch]);
+
+  const info = localStorage.getItem('shit-key');
+  console.log('info lcalstorage:', info);
 
  const allPosts = useSelector(getAll); 
 

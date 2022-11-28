@@ -2,7 +2,7 @@ import shortid from 'shortid';
 import Axios from 'axios';
 /* selectors */
 
-export const getAll = ({posts}) => {console.log('gatAll posts:',posts.data); return (posts.data)};
+export const getAll = ({posts}) => (posts.data);
 //.filter(post => post.status === 'published');
 export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
 
@@ -28,12 +28,10 @@ export const editPost = payload => ({payload, type: EDIT_POST})
 export const fetchPublished = () => {
   return async (dispatch) => {
     dispatch(fetchStarted());
-    console.log('axiost starts!!:');
 
    await Axios
       .get('http://localhost:8000/api/posts')
       .then(res => {
-        console.log('axios res:', res.data);
         dispatch(fetchSuccess(res.data));
       })
       .catch(err => {
@@ -51,8 +49,6 @@ const initialState = {
 
 /* reducer */
 export const reducer = (statePart = initialState, action={}) => {
-  console.log('action.payload:', action.payload);
-  console.log('statepart:', statePart);
   switch (action.type) {
     case FETCH_START: {
       return {

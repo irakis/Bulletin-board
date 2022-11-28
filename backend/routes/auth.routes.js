@@ -10,7 +10,7 @@ router.get('/google',
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/post/nopermission' }),
   (req, res) => {
-    //console.log('res.email???', req.user)
+    console.log('res.sessionId???', req.sessionID)
     res.redirect('/login/author');
     router.put('/login/author', AuthorController.loginAuthor);  
   }

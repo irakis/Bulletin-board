@@ -1,6 +1,6 @@
 import Axios from 'axios';
 /* selectors */
-export const getAuthors = ({authors}) => authors;
+export const getAuthors = ({posts}) => (posts.authors);
 export const getLoggedAuthor = ({authors}) => (authors.find(author => (author.isLogged === true)));
 
 /* action name creator */
@@ -30,7 +30,7 @@ export const fetchPublishedAuthors = () => {
     dispatch(fetchStarted());
 
     await Axios
-      .get('http://localhost:8000/api/posts')
+      .get('http://localhost:8000/api/authors')
       .then(res => {
         console.log('axios res: ',res);
         dispatch(fetchSuccess(res.data));

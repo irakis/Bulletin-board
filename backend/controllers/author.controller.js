@@ -7,9 +7,10 @@ exports.loginAuthor = async (req, res)=> {
         localStorage.setItem('currenUserEmail', authorEmail)
 
         const sessionKey = req.sessionID;
-        console.log('sessionKey: ', sessionKey);
+        localStorage.setItem('sessionKey', sessionKey);
+        console.log('sessionKey', sessionKey);
 
-        const loggedAuthor = await Author.find(authorEmail);
+        const loggedAuthor = await Author.find(author=> author.email === authorEmail);
         if (loggedAuthor) {
             loggedAuthor.isLogged = true;
             loggedAuthor.session = sessionKey;

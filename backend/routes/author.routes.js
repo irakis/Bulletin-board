@@ -6,7 +6,8 @@ const Author = require('../models/author.model');
 router.get('/authors', async (req, res) => {
   try {
     const result = await Author
-    .select('email phone role')
+      .find().sort({ published: 1 })
+    console.log('authors w endpoint:', result);
     if(!result) res.status(404).json({ author: 'Not found' });
     else res.json(result);
   }

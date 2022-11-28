@@ -16,8 +16,9 @@ import styles from './Logged.module.scss';
 
 const Component = ({className, children}) => {
 
-  const currentUserEmail = window.localStorage.getItem('currnetUserEmail');
-  console.log('currneUserEmail w Logged:', currentUserEmail)
+  const currentUserEmail = window.localStorage.getItem('cuurentUserEmail');
+  const sessionKey = window.localStorage.getItem('sessionKey')
+  console.log('currneUserEmail w Logged:', currentUserEmail, sessionKey)
   
   const allPosts = useSelector(getAll);
   let listOfTitles = [];
