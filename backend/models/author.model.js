@@ -6,6 +6,7 @@ const authorSchema = new mongoose.Schema({
       match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'] },
     phone: { type: Number, required: false },
     role: { type: String, reqired: false},
+    isLogged: { tyle: Boolean },
     displayName: { type: String }
   });
 

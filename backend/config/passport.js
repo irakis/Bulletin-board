@@ -8,11 +8,14 @@ passport.use(new GoogleStrategy({
     clientSecret: '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',
     callbackURL: 'http://localhost:8000/auth/google/callback'
   }, (accessToken, refreshToken, profile, email ,done) => {
+    console.log('email w strategy1:', email.emails[0].value)
     
-      Author.findOrCreate(
-        { email: email.emails[0].value, displayName: profile.displayName },
-        done(null, profile)
-      )
+      Author.findOneAndUpdate(
+        { email: email.emails[0].value },
+        { isLogged: true },
+        { returnOriginal: false }
+      ).exec();
+      done(null, profile)
   })
 );
   

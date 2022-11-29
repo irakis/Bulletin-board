@@ -4,24 +4,21 @@ const router = express.Router();
 const AuthorController = require('../controllers/author.controller');
 
 router.get('/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] })
+  passport.authenticate('google', { scope: [ 'profile', 'email' ] })
 );
 
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/post/nopermission' }),
   (req, res) => {
-    console.log('res.sessionId???', req.sessionID)
     res.redirect('/login/author');
-    router.put('/login/author', AuthorController.loginAuthor);  
   }
 );
 
-router.get('/logout', (req, res) => { 
+router.get('/logout', (req, res) => {
+   
   req.session.destroy((err) => {
     res.json({message: err})
   })
 });
-
-
 
 module.exports = router;

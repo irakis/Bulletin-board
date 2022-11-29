@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PostList from '../../features/PostList';
 import Button from '@mui/material/Button';
 import { SimpleList } from '../../features/SimpleList';
+import { getAll, getOneAuthorPosts } from '../../../redux/postsRedux';
+import { useNavigate } from 'react-router-dom';
 
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux';
-import { getLoggedAuthor } from '../../../redux/authorRedux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchPublishedAuthors, getLoggedAuthor, loadAuthorsRequest } from '../../../redux/authorRedux';
 
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
@@ -15,26 +16,26 @@ import { getLoggedAuthor } from '../../../redux/authorRedux';
 import styles from './Logged.module.scss';
 
 const Component = ({className, children}) => {
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(fetchPublishedAuthors())
+  }, []);
 
-  const currentUserEmail = window.localStorage.getItem('cuurentUserEmail');
-  const sessionKey = window.localStorage.getItem('sessionKey')
-  console.log('currneUserEmail w Logged:', currentUserEmail, sessionKey)
-  
+  const navigate = useNavigate();
+
   const allPosts = useSelector(getAll);
   let listOfTitles = [];
 
   const currentUser = useSelector(getLoggedAuthor);
-  console.log('user w logged: ', currentUser);
-  console.log('allposts w logged:', allPosts);
+  console.log('logged user?: ', currentUser);
+  const authorsPosts = useSelector(getOneAuthorPosts(currentUser)); 
 
   if (currentUser && currentUser.role === 'admin') {
     listOfTitles = allPosts;
   } else if (currentUser && currentUser.role === 'user') {
-    listOfTitles = allPosts.filter( post => post.email === currentUser.email);
-  } else if (currentUser === undefined){
-    
-    // eslint-disable-next-line
-    allPosts.map((post) => {listOfTitles.push({title: post.title})})
+    listOfTitles = authorsPosts;
+  } else if (currentUser === undefined){    
+      navigate('/');
   }
      
   console.log('listOfTitles', listOfTitles);
@@ -45,9 +46,13 @@ const Component = ({className, children}) => {
         {(currentUser !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button> : null}
         </div> 
           {children}
-          {(currentUser !== undefined) ? <PostList posts={listOfTitles}/> : <SimpleList posts={listOfTitles}/>}
+          {(currentUser !== undefined) ? <PostList posts={listOfTitles}/> : <SimpleList posts={allPosts}/>}
       </div>
       )
+};
+
+Component.defaultProps = {
+  currentUser: ''
 };
 
 Component.propTypes = {

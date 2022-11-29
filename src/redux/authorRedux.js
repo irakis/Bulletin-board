@@ -1,7 +1,7 @@
 import Axios from 'axios';
 /* selectors */
-export const getAuthors = ({posts}) => (posts.authors);
-export const getLoggedAuthor = ({authors}) => (authors.find(author => (author.isLogged === true)));
+export const getAuthors = ({authors}) => (authors.data);
+export const getLoggedAuthor = ({authors}) => (authors.data.find(author => (author.isLogged === true)));
 
 /* action name creator */
 const reducerName = 'authors';
@@ -32,7 +32,6 @@ export const fetchPublishedAuthors = () => {
     await Axios
       .get('http://localhost:8000/api/authors')
       .then(res => {
-        console.log('axios res: ',res);
         dispatch(fetchSuccess(res.data));
       })
       .catch(err => {
@@ -41,14 +40,30 @@ export const fetchPublishedAuthors = () => {
   };
 };
 
+export const loadAuthorsRequest = () => {
+  return async (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    await Axios
+      .put('http://localhost:8000/api/authors')
+      .then(res => {
+        console.log('edit author res.data:', res.data);
+        dispatch(loginAuthor(res.data))
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  }
+}
+
 /*Initial state*/
 
 const initialState = {
-  authors: []
+  data: []
 };
 
 /* reducer */
-export const reducer = (statePart = initialState.authors, action = {}) => {
+export const reducer = (statePart = initialState, action = {}) => {
   switch (action.type) {
     case FETCH_START: {
       return {
@@ -66,7 +81,7 @@ export const reducer = (statePart = initialState.authors, action = {}) => {
           active: false,
           error: false,
         },
-        ...action.payload,
+        data: [...action.payload],
       };
     }
     case FETCH_ERROR: {

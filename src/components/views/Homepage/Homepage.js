@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import PostList from '../../features/PostList';
 
@@ -8,7 +8,6 @@ import { getAll } from '../../../redux/postsRedux';
 import { fetchPublishedAuthors, getLoggedAuthor } from '../../../redux/authorRedux';
 import { SimpleList } from '../../features/SimpleList';
 import { fetchPublished } from '../../../redux/postsRedux';
-//import PostList from '../../features/PostList';
 import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
@@ -23,15 +22,9 @@ const Component = ({className ,children}) => {
     dispatch(fetchPublishedAuthors());
   }, [dispatch]);
 
-  const info = localStorage.getItem('shit-key');
-  console.log('info lcalstorage:', info);
-
  const allPosts = useSelector(getAll); 
 
   console.log('allPosts:', allPosts);
-  //const [listOfTitles, setListOfTitles] = useState(allPosts);
-  //console.log('listofTitled:', listOfTitles);
-
 
   return (
     <div className={clsx(className, styles.root, )} sx={{ height: 300}}>

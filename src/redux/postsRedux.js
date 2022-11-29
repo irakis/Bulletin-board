@@ -2,9 +2,9 @@ import shortid from 'shortid';
 import Axios from 'axios';
 /* selectors */
 
-export const getAll = ({posts}) => (posts.data);
-//.filter(post => post.status === 'published');
+export const getAll = ({posts}) => (posts.data.filter(post => post.status === 'published'));
 export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
+export const getOneAuthorPosts = ({posts}, email) => posts.data.filter(post => post.author === email)
 
 /* action name creator */
 const reducerName = 'posts';

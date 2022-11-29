@@ -16,6 +16,7 @@ import { NoPermission } from './components/views/NoPermission/NoPermission';
 import { Logged } from './components/views/Logged/Logged';
 import { Logout } from './components/views/Logout/Logout';
 import { fetchPublished } from './redux/postsRedux';
+import { fetchPublishedAuthors } from './redux/authorRedux';
 
 
 const theme = createTheme({
@@ -27,8 +28,8 @@ const theme = createTheme({
 const App = () =>{
   
   useEffect(()=>{
-    console.log('app dispatch fired!!')
     store.dispatch(fetchPublished());
+    store.dispatch(fetchPublishedAuthors());
   },[])
   
   return (
