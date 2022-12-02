@@ -27,31 +27,4 @@ router.get('/authors/:id', async (req, res) => {
   }
 });
 
-router.put('/login/author', async (req, res)=> {
-  try {
-      const authorEmail = req.user.emails[0].value;
-      console.log('authorEmail????: ', authorEmail);
-
-      const sessionKey = req.sessionID;
-      console.log('sessionKey', sessionKey);
-
-      await Author.findOneAndUpdate(
-        {email: authorEmail},
-        {isLogged: true},
-        {new: true}
-      )
-
-     // const loggedAuthor = await Author.find(author=> author.email === authorEmail);
-     // if (loggedAuthor) {
-      //  await Author.updateOne({email: authorEmail},{isLogged: true});
-       // console.log('endpoint logged author:', loggedAuthor);
-          //loggedAuthor.isLogged = true;
-          //loggedAuthor.session = sessionKey;
-          //await loggedAuthor.save();
-      //} else res.status(400).json({message: 'Not found'})
-  } catch (err) {
-      res.status(500).json({message: err})
-  }
-});
-
 module.exports = router;

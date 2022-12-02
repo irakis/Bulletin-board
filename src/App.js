@@ -41,11 +41,11 @@ const App = () =>{
           <MainLayout>
             <Routes>
               <Route exact path='/' element={<Homepage/>} />
-              <Route exact path='/post/add' element={<PostAdd/>} />
-              <Route exact path='/post/:id' element={<Post/>} />
-              <Route exact path='/post/:id/edit' element={<PostEdit/>} />
-              <Route exact path='/post/nopermission' element={<NoPermission/>} />
-              <Route exact path='/login/author' element={<Logged/>} />
+              <Route exact path='/posts/add' element={<PostAdd/>} />
+              <Route exact path='/posts/:id' element={<Post/>} />
+              <Route exact path='/posts/:id/edit' element={<PostEdit/>} />
+              <Route exact path='/posts/nopermission' element={<NoPermission/>} />
+              <Route exact path='/login/author/:id' element={<Logged/>} />
               <Route exact path='/logout' element={<Logout/>} />
               <Route path='*' element={<NotFound/>} />
             </Routes>

@@ -3,8 +3,8 @@ import Axios from 'axios';
 /* selectors */
 
 export const getAll = ({posts}) => (posts.data.filter(post => post.status === 'published'));
-export const getOnePost = ({posts}, id) => posts.data.find(post => (post.id === id));
-export const getOneAuthorPosts = ({posts}, email) => posts.data.filter(post => post.author === email)
+export const getOnePost = (id) => ({posts}) => (posts.data.find(post => (post._id.toString() === id)));
+export const getOneAuthorPosts = (email) => ({posts}) => (posts.data.filter(post => (post.author === email)));
 
 /* action name creator */
 const reducerName = 'posts';
@@ -31,6 +31,21 @@ export const fetchPublished = () => {
 
    await Axios
       .get('http://localhost:8000/api/posts')
+      .then(res => {
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
+export const fetchSinglePost = (id) => {
+  return async (dispatch) => {
+    dispatch(fetchStarted());
+
+   await Axios
+      .get(`http://localhost:8000/api/posts/${id}`)
       .then(res => {
         dispatch(fetchSuccess(res.data));
       })

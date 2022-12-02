@@ -8,9 +8,10 @@ router.get('/google',
 );
 
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/post/nopermission' }),
+  passport.authenticate('google', { failureRedirect: '/posts/nopermission' }),
   (req, res) => {
-    res.redirect('/login/author');
+    const currentUser = req.user.emails[0].value
+    res.redirect(`/login/author/${currentUser}`);
   }
 );
 

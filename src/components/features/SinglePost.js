@@ -1,16 +1,30 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
-import { getOnePost } from '../../redux/postsRedux';
-import { useSelector } from 'react-redux';
+import { getAll, getOnePost } from '../../redux/postsRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPublished, fetchSinglePost } from '../../redux/postsRedux';
 
 export default function RecipeReviewCard() {
+
   const { id } = useParams();
-  const post = useSelector(posts => getOnePost(posts, id));  
+  console.log('id params:', id);
+  
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchSinglePost(id))//<===========================ta ancja nie startuje. Dalczego?
+  }, []);
+
+  const post = useSelector(getOnePost(id));//<===================== tu zwraca undefined. W Homepage działa i zwraca dobry obiekt
+  
+  console.log('post in POST:', post);
+
 
   return (
     <Card sx={{ margin: 3, width: '75%', mx: 'auto', maxHeight: 800}}>

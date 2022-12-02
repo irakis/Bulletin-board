@@ -1,7 +1,7 @@
 import Axios from 'axios';
 /* selectors */
 export const getAuthors = ({authors}) => (authors.data);
-export const getLoggedAuthor = ({authors}) => (authors.data.find(author => (author.isLogged === true)));
+export const getLoggedAuthor = (email) => ({authors}) => (authors.data.find(author => (author.email === email)));
 
 /* action name creator */
 const reducerName = 'authors';

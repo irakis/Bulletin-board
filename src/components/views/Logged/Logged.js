@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import PostList from '../../features/PostList';
 import Button from '@mui/material/Button';
 import { SimpleList } from '../../features/SimpleList';
-import { getAll, getOneAuthorPosts } from '../../../redux/postsRedux';
-import { useNavigate } from 'react-router-dom';
+import { getAll, getOneAuthorPosts, getOnePost } from '../../../redux/postsRedux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import clsx from 'clsx';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchPublishedAuthors, getLoggedAuthor, loadAuthorsRequest } from '../../../redux/authorRedux';
+import { useSelector } from 'react-redux';
+import { getLoggedAuthor } from '../../../redux/authorRedux';
 
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
@@ -16,43 +16,33 @@ import { fetchPublishedAuthors, getLoggedAuthor, loadAuthorsRequest } from '../.
 import styles from './Logged.module.scss';
 
 const Component = ({className, children}) => {
-  const dispatch = useDispatch();
-  useEffect(()=>{
-    dispatch(fetchPublishedAuthors())
-  }, []);
-
+  
   const navigate = useNavigate();
 
   const allPosts = useSelector(getAll);
-  let listOfTitles = [];
+  const { id } = useParams();
 
-  const currentUser = useSelector(getLoggedAuthor);
-  console.log('logged user?: ', currentUser);
-  const authorsPosts = useSelector(getOneAuthorPosts(currentUser)); 
+  const author = useSelector(getLoggedAuthor(id));
+  const authorRole = author?.role;
+  const authorsPosts = useSelector(getOneAuthorPosts(id));
+  
+  console.log('authorsPosts:', authorsPosts);
 
-  if (currentUser && currentUser.role === 'admin') {
-    listOfTitles = allPosts;
-  } else if (currentUser && currentUser.role === 'user') {
-    listOfTitles = authorsPosts;
-  } else if (currentUser === undefined){    
-      navigate('/');
-  }
-     
-  console.log('listOfTitles', listOfTitles);
-
+  if(id) {
     return (
       <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
         <div>
-        {(currentUser !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button> : null}
+        {(authorRole !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href='/post/add'>Add post</Button> : null}
         </div> 
           {children}
-          {(currentUser !== undefined) ? <PostList posts={listOfTitles}/> : <SimpleList posts={allPosts}/>}
+           {(authorRole === 'user' || authorRole === 'admin') ?
+              <PostList posts={(authorRole === 'admin') ? allPosts : authorsPosts} /> 
+              : <SimpleList posts={allPosts}/>
+            }          
       </div>
-      )
-};
-
-Component.defaultProps = {
-  currentUser: ''
+    )
+  } else 
+    navigate('/');
 };
 
 Component.propTypes = {
