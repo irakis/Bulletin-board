@@ -27,7 +27,7 @@ export const editPost = payload => ({payload, type: EDIT_POST})
 /* thunk creators */
 export const fetchPublished = () => {
   return async (dispatch) => {
-    dispatch(fetchStarted());
+    dispatch(fetchStarted({ name: 'FETCH_START' }));
 
    await Axios
       .get('http://localhost:8000/api/posts')
@@ -55,12 +55,29 @@ export const fetchSinglePost = (id) => {
   };
 };
 
+export const addPostRequest = (post) => {
+  return async (dispatch) => {
+    dispatch(fetchStarted({ name: 'ADD_POST' }));
+
+   await Axios
+      .post('http://localhost:8000/api/posts/add', post)
+      .then(res => {
+        //dispatch(fetchSuccess(res.data));
+        console.log('posts add?? :', res.data);
+        dispatch(addPost(res.data));
+        dispatch(fetchPublished());
+      })
+      .catch(err => {
+        dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
+      });
+  };
+};
+
 /*Initial state*/
 
 const initialState = {
   data: []
 };
-
 
 /* reducer */
 export const reducer = (statePart = initialState, action={}) => {
@@ -97,8 +114,16 @@ export const reducer = (statePart = initialState, action={}) => {
       return (statePart.map(post =>(post.id === action.payload.id ? {...post, ...action.payload} : post)))
     }
     case ADD_POST: {
-      return [ ...statePart, {...action.payload, id: shortid.generate() } ];
+      return { 
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: [...statePart.data, action.payload]
+      };
     }
+
     default:
       return statePart;
   }

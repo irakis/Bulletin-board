@@ -5,24 +5,26 @@ import MenuItem from '@mui/material/MenuItem';
 
 const statuses = [
   {
-    value: 'Draft',
-    label: 'Draft',
+    value: 'draft',
+    label: 'draft',
   },
   {
-    value: 'Closed',
-    label: 'Closed',
+    value: 'closed',
+    label: 'closed',
   },
   {
-    value: 'Published',
-    label: 'Published',
+    value: 'published',
+    label: 'published',
   } 
 ];
 
-export default function SelectTextFields() {
-  const [status, setStatus] = React.useState('Draft');
+export default function SelectTextFields({action}) {
+  const [status, setOptionStatus] = React.useState('Draft');
+  action(status);
 
   const handleChange = (event) => {
-    setStatus(event.target.value);
+    event.preventDefault();
+    setOptionStatus(event.target.value);
   };
 
   return (
@@ -40,7 +42,7 @@ export default function SelectTextFields() {
           label="Select"
           value={status}
           onChange={handleChange}
-          helperText="Select annoncement state"
+          helperText="Select announcement state"
         >
           {statuses.map((option) => (
             <MenuItem key={option.value} value={option.value}>

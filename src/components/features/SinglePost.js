@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { getAll, getOnePost } from '../../redux/postsRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPublished, fetchSinglePost } from '../../redux/postsRedux';
+import { store } from '../../redux/store';
 
 export default function RecipeReviewCard() {
 
@@ -18,12 +19,13 @@ export default function RecipeReviewCard() {
   const dispatch = useDispatch();
 
   useEffect(()=>{
+    dispatch(fetchPublished());
     dispatch(fetchSinglePost(id))//<===========================ta ancja nie startuje. Dalczego?
-  }, []);
+  }, [dispatch]);
 
   const post = useSelector(getOnePost(id));//<===================== tu zwraca undefined. W Homepage działa i zwraca dobry obiekt
-  
-  console.log('post in POST:', post);
+  const post1 = useEffect(getAll);
+  console.log('post in POST:', post, post1);
 
 
   return (

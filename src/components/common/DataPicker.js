@@ -9,9 +9,8 @@ import { Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 
 export default function MaterialUIPickers({data, text, action}) {
-  console.log('data datePicker: ', action)
 
-  const [value, setValue] = useState(dayjs(data ? data : (new Date())));
+  const [value, setValue] = useState(dayjs(data ? data : (new Date())).format('L'));
 
   // eslint-disable-next-line
   useEffect(()=>action(value), []);
@@ -28,7 +27,7 @@ export default function MaterialUIPickers({data, text, action}) {
         <Stack spacing={3}>
           <DesktopDatePicker
             label={text}
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             value={value}
             onChange={handleChange}
             renderInput={(data) => <TextField {...data} />}

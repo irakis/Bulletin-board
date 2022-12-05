@@ -26,7 +26,6 @@ const theme = createTheme({
 });
 
 const App = () =>{
-  
   useEffect(()=>{
     store.dispatch(fetchPublished());
     store.dispatch(fetchPublishedAuthors());
@@ -41,7 +40,7 @@ const App = () =>{
           <MainLayout>
             <Routes>
               <Route exact path='/' element={<Homepage/>} />
-              <Route exact path='/posts/add' element={<PostAdd/>} />
+              <Route exact path='/posts/add/:id' element={<PostAdd/>} />
               <Route exact path='/posts/:id' element={<Post/>} />
               <Route exact path='/posts/:id/edit' element={<PostEdit/>} />
               <Route exact path='/posts/nopermission' element={<NoPermission/>} />

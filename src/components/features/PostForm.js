@@ -6,11 +6,13 @@ import DataPicker from '../common/DataPicker';
 import Options from '../common/Options';
 import UploadButton from '../common/UploadButton';
 import { useDispatch } from 'react-redux';
-import { addPost, editPost } from '../../redux/postsRedux';
-import { useNavigate } from 'react-router-dom';
+import { addPostRequest, editPost } from '../../redux/postsRedux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function MultilineTextFields({data}) {
+  const { id }  = useParams();
 
+  const [author, setAuthor] = React.useState(data ? data.author : `${id}`);
   const [title, setTitle] = React.useState(data ? data.title : '');
   const [published, setPublished] = React.useState(data ? data.published : '');
   const [img, setImg] = React.useState(data ? data.img : '');
@@ -19,24 +21,26 @@ export default function MultilineTextFields({data}) {
   const [price, setPrice] = React.useState(data ? data.price : '');
   const [revised, setRevised] = React.useState(data ? data.revised : '');
   const [status, setStatus] = React.useState(data ? data.status : '');
-  const [ id ] = React.useState(data ? data.id : '')
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log('revised', published);
+
+  const setPostStatus = (status) => {
+    setStatus(status);
+  }
   
   const handleClick = (e) => {
-
+    
     if (!data) {
-      dispatch(addPost({title: title, published: published, content: content, 
+      dispatch(addPostRequest({author: author, title: title, published: published, content: content, 
         location: location, price: price, revised: revised, status: status, img: img}));
     } else {
     dispatch(editPost({title: title, published: published, content: content, 
       location: location, price: price, revised: revised, status: status, img: img, id: id}));
     }
-    navigate("/");
+    navigate('/login/author/' + id)
   };
-
+ 
   return (
     <Box
       component="form"
@@ -81,7 +85,7 @@ export default function MultilineTextFields({data}) {
 
         <DataPicker action={setRevised} data={revised} text={'Revised'}/>
 
-        <Options action={setStatus}/>
+        <Options action={setPostStatus}/>
 
         <TextField
           id="outlined-textarea"
