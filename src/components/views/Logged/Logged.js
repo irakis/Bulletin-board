@@ -24,6 +24,9 @@ const Component = ({className, children}) => {
 
   const author = useSelector(getLoggedAuthor(id));
   const authorRole = author?.role;
+
+  localStorage.setItem('currentUserRole', `${authorRole}`);
+  
   const authorsPosts = useSelector(getOneAuthorPosts(id));
   
   console.log('authorsPosts:', authorsPosts);

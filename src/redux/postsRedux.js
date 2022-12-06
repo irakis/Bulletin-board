@@ -42,15 +42,17 @@ export const fetchPublished = () => {
 
 export const fetchSinglePost = (id) => {
   return async (dispatch) => {
-    dispatch(fetchStarted());
+    dispatch(fetchStarted({name: 'EDIT_POST'}));
 
    await Axios
       .get(`http://localhost:8000/api/posts/${id}`)
       .then(res => {
-        dispatch(fetchSuccess(res.data));
+        console.log('single post axios:',res.data);
+        dispatch(addPost(res.data));
+        dispatch(fetchPublished());
       })
       .catch(err => {
-        dispatch(fetchError(err.message || true));
+        dispatch(fetchError({ name: 'EDIT_POST', error: err.message || true }));
       });
   };
 };
@@ -62,8 +64,6 @@ export const addPostRequest = (post) => {
    await Axios
       .post('http://localhost:8000/api/posts/add', post)
       .then(res => {
-        //dispatch(fetchSuccess(res.data));
-        console.log('posts add?? :', res.data);
         dispatch(addPost(res.data));
         dispatch(fetchPublished());
       })

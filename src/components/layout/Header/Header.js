@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar   from '../../common/AppBar';
+import { useDispatch } from 'react-redux';
 
 import clsx from 'clsx';
 
@@ -12,6 +13,14 @@ import styles from './Header.module.scss';
 const Component = ({ className, currentUser }) => {
   //console.log('heder user: ', currentUser.role)
   let links;
+
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    const role = localStorage.getItem('currentUserRole');
+    console.log('local storage reole:', role);
+  }, [dispatch]);
+
   
   if (currentUser.role === ('admin' || 'user')) {
     links = [{text: 'Announcements', href: '/'}, {text: 'Logout', href: '/logout'}]  

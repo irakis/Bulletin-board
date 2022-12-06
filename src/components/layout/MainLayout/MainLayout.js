@@ -14,8 +14,7 @@ import { Header } from '../Header/Header';
 const Component = ({className, children}) => {
 
 let currentUser = ''
-  //const currentUser = { email: 'a1@a1.org' , phone: '2345643', location: 'Rio', isLogged: true, role: 'admin' }
-  
+    
   //useSelector(getLoggedAuthor);
   
     return (

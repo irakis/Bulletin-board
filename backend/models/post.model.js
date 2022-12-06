@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
   author: { type: String, required : true, 
     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'] },
-  published: { type: Date, required: true },
-  revised: { type: Date, required: true },
+  published: { type: String, required: true },
+  revised: { type: String, required: true },
   status: { type: String, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
