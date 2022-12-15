@@ -87,7 +87,7 @@ router.post('/posts/add', upload.single('img'), async (req, res) => {
       status: status,
       title: title,
       content: content,
-      img: url + '/public/img/uploads' + img,
+      img: url + '/public/img/uploads/' + img,
       price: price,
       phone: phone,
       location: location,

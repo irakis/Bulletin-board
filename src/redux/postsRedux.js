@@ -57,21 +57,16 @@ export const deletePost = (id) => {
 };
 
 export const addPostRequest = (post) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(fetchStarted({ name: 'ADD_POST' }));
-
-   Axios
-      .post(`${API_URL}/posts/add`, post)
-        console.log('post w axios:', post)
-      .then(() => {
-        dispatch(addPost(post));
-        //dispatch(fetchPublished())
-        }
-      )
-      .catch(err => {
+    try {
+      await Axios
+      .post('http://localhost:8000/api/posts/add', post)
+        dispatch(fetchPublished());
+    } catch (err) {
         dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
-      });
-  };
+    }
+  }
 };
 
 export const editPostRequest = (post) => {

@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux';
 import { editPostRequest, addPostRequest } from '../../redux/postsRedux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
 
 export default function MultilineTextFields({data}) {
 
