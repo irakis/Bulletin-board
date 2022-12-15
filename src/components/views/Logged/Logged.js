@@ -29,7 +29,6 @@ const Component = ({className, children}) => {
   
   const authorsPosts = useSelector(getOneAuthorPosts(id));
   
-  console.log('authorsPosts:', authorsPosts);
 
   if(id) {
     return (

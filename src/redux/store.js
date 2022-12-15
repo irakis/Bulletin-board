@@ -18,14 +18,14 @@ const reducers = {
   //  reducers[item] = (statePart = null) => statePart;
  // }
 //});
-//const initialState = {};
+const initialState = {};
 
 const combinedReducers = combineReducers(reducers);
 
 // create store
 export const store = createStore(
   combinedReducers,
- // initialState,
+  initialState,
   composeWithDevTools(
     applyMiddleware(thunk)
   )

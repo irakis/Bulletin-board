@@ -18,8 +18,12 @@ const statuses = [
   } 
 ];
 
-export default function SelectTextFields({action}) {
-  const [status, setOptionStatus] = React.useState('Draft');
+export default function SelectTextFields({action}, statusData) {
+  const [status, setOptionStatus] = React.useState('draft');
+  React.useEffect(()=>{
+    setOptionStatus(statusData);
+  },[statusData, action])
+
   action(status);
 
   const handleChange = (event) => {

@@ -13,15 +13,11 @@ import { Header } from '../Header/Header';
 
 const Component = ({className, children}) => {
 
-let currentUser = ''
-    
-  //useSelector(getLoggedAuthor);
-  
-    return (
-    <div className={clsx(className, styles.root)}>
-      <Header currentUser={currentUser} />
-      { children }
-    </div>
+  return (
+  <div className={clsx(className, styles.root)}>
+    <Header />
+    { children }
+  </div>
   );
 }
 

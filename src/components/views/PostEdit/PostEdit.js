@@ -13,9 +13,10 @@ import clsx from 'clsx';
 import styles from './PostEdit.module.scss';
 
 const Component = ({className, children}) =>{ 
-  
+
   const { id } = useParams();
-  const postToEdit = useSelector(posts => getOnePost(posts, id));
+  console.log('postEdir id:', id);
+  const postToEdit = useSelector(getOnePost(id));
   console.log('postToEdit', postToEdit);
   
   return (

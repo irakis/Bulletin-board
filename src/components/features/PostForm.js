@@ -6,39 +6,60 @@ import DataPicker from '../common/DataPicker';
 import Options from '../common/Options';
 import UploadButton from '../common/UploadButton';
 import { useDispatch } from 'react-redux';
-import { addPostRequest, editPost } from '../../redux/postsRedux';
+import { editPostRequest, addPostRequest } from '../../redux/postsRedux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { redirect } from 'react-router-dom';
 
 export default function MultilineTextFields({data}) {
-  const { id }  = useParams();
 
-  const [author, setAuthor] = React.useState(data ? data.author : `${id}`);
-  const [title, setTitle] = React.useState(data ? data.title : '');
-  const [published, setPublished] = React.useState(data ? data.published : '');
-  const [img, setImg] = React.useState(data ? data.img : '');
-  const [content, setContent] = React.useState(data ? data.content : '');
-  const [location, setLocation] = React.useState(data ? data.author.location : '');
-  const [price, setPrice] = React.useState(data ? data.price : '');
-  const [revised, setRevised] = React.useState(data ? data.revised : '');
-  const [status, setStatus] = React.useState(data ? data.status : '');
+  const { id } = useParams();
+  
+  console.log('authorId:', id);
+  const navigate = useNavigate();  
+  
+  const [author, setAuthor] = useState(id);
+  const [title, setTitle] = useState('');
+  const [published, setPublished] = useState('');
+  const [img, setImg] = useState('');
+  const [content, setContent] = useState('');
+  const [location, setLocation] = useState('');
+  const [price, setPrice] = useState('');
+  const [revised, setRevised] = useState('');
+  const [status, setStatus] = useState('');
+  const [postId, setPostId] = useState(data?._id);
+
+  React.useEffect(()=>{
+    setTitle(data?.title);
+    setPublished(data?.published);
+    setImg(data?.img);
+    setContent(data?.content);
+    setLocation(data?.location);
+    setPrice(data?.price);
+    setRevised(data?.revised);
+    setStatus(data?.status);
+    setAuthor(data ? data.author : id);
+    setPostId(data? data._id: '')
+  },[data])
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const setPostStatus = (status) => {
-    setStatus(status);
+  const handleCancel = (e) => {
+    navigate('/posts/' + data?._id)
   }
   
   const handleClick = (e) => {
-    
-    if (!data) {
-      dispatch(addPostRequest({author: author, title: title, published: published, content: content, 
-        location: location, price: price, revised: revised, status: status, img: img}));
+    console.log('postForm data runs?');
+   
+    if(data) {  
+      dispatch(editPostRequest({postId: postId, title: title, published: published, content: content, 
+        location: location, price: price, revised: revised, status: status, img: img, author: author}));
     } else {
-    dispatch(editPost({title: title, published: published, content: content, 
-      location: location, price: price, revised: revised, status: status, img: img, id: id}));
+      dispatch(addPostRequest({title: title, published: published, content: content, 
+        location: location, price: price, revised: revised, status: status, img: img, author: author}));
     }
-    navigate('/login/author/' + id)
+  
+    navigate('/login/author/' + author)
   };
  
   return (
@@ -60,9 +81,9 @@ export default function MultilineTextFields({data}) {
           onChange={e =>{setTitle(e.target.value)}}
         />
 
-        <DataPicker action={setPublished} data={published} text={'Published'}/>
+        <DataPicker action={setPublished} data={data?.published} text={'Published'}/>
 
-        <UploadButton sx={{ my: 'auto', py: 'auto'}} action={setImg}/>
+        <UploadButton sx={{my: 'auto', py: 'auto'}} action={setImg}/>
         
         <TextField
           sx={{ maxWidth: '150px' }}
@@ -85,7 +106,7 @@ export default function MultilineTextFields({data}) {
 
         <DataPicker action={setRevised} data={revised} text={'Revised'}/>
 
-        <Options action={setPostStatus}/>
+        <Options action={setStatus} statusData={status}/>
 
         <TextField
           id="outlined-textarea"
@@ -96,7 +117,9 @@ export default function MultilineTextFields({data}) {
           multiline
         />
       </div> 
-      <Button onClick={handleClick} variant="outlined">save changes</Button>
+      <Button onClick={handleClick} variant="outlined"sx={{mb:2}}>save changes</Button>
+      <Button onClick={handleCancel} variant="outlined" color="error" sx={{ml:2, mb:2}}>cancel</Button>
     </Box>
-  );
-}
+  )
+} 
+//return redirect('/login/author:id'); //<====================to nie działa

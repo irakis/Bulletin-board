@@ -18,7 +18,7 @@ export default function TitlebarBelowImageList({posts}) {
           />
           <ImageListItemBar
             title={item.title}
-            subtitle={<span>author: {item.author.email}, price: {item.price}</span>}
+            subtitle={<span>author: {item.author}, price: {item.price}</span>}
             position="below"
           />
           <Button variant="contained" href={`/posts/${item._id}`}>See more</Button>

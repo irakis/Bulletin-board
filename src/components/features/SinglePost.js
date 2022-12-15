@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 export default function RecipeReviewCard({post}) {
+  console.log('to jest post w singlePost:', post);
 
   return (
     <Card sx={{ margin: 3, width: '75%', mx: 'auto', maxHeight: 800}}>

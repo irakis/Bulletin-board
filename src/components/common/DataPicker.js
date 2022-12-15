@@ -10,15 +10,20 @@ import { useState, useEffect } from 'react';
 
 export default function MaterialUIPickers({data, text, action}) {
 
-  const [value, setValue] = useState(dayjs(data ? data : (new Date())).format('L'));
+  const [value, setValue] = useState(data ? data : dayjs().format('DD/MM/YYYY'));
+  console.log('data piscker now:',dayjs().format('ddd, DD/MM/YYYY'));
+  console.log('data picker what is in data:',data);
+
 
   // eslint-disable-next-line
-  useEffect(()=>action(value), []);
-  
+  //useEffect(()=>action(value), []);
+    
   const handleChange = (newValue) => {
-    setValue(newValue); 
-  };
 
+    setValue(newValue);
+    action(value); 
+  };
+  
   return (
     <Box sx={{
       '& .MuiTextField-root': { m: 3, width: '25ch', margin: 'auto' },
@@ -26,6 +31,7 @@ export default function MaterialUIPickers({data, text, action}) {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Stack spacing={3}>
           <DesktopDatePicker
+            disableFuture={true}
             label={text}
             inputFormat="DD/MM/YYYY"
             value={value}

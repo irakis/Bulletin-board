@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session')
 const passportConfig = require('./config/passport');
+//const multer = reqiure('multer');
 
 const postsRoutes = require('./routes/posts.routes');
 const authorsRoutes = require('./routes/author.routes');

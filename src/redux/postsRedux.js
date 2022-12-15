@@ -1,9 +1,9 @@
-import shortid from 'shortid';
 import Axios from 'axios';
+import { API_URL } from '../config';
 /* selectors */
 
 export const getAll = ({posts}) => (posts.data.filter(post => post.status === 'published'));
-export const getOnePost = (id) => ({posts}) => (posts.data.find(post => (post._id.toString() === id)));
+export const getOnePost = (id) => ({posts}) => (posts.data.find(post => (post._id === id)));
 export const getOneAuthorPosts = (email) => ({posts}) => (posts.data.filter(post => (post.author === email)));
 
 /* action name creator */
@@ -15,23 +15,24 @@ const FETCH_START = createActionName('FETCH_START');
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 const ADD_POST = createActionName('ADD_POST');
-const EDIT_POST = createActionName('EDIT_POST');
+const DELETE_POST = createActionName('DELETE_POST');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
 export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addPost = payload => ({payload, type: ADD_POST});
-export const editPost = payload => ({payload, type: EDIT_POST})
+//export const deleteSinglePost = payload => ({payload, type: DELETE_POST})
 
 /* thunk creators */
 export const fetchPublished = () => {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch(fetchStarted({ name: 'FETCH_START' }));
 
-   await Axios
+   Axios
       .get('http://localhost:8000/api/posts')
       .then(res => {
+        console.log(res.data);
         dispatch(fetchSuccess(res.data));
       })
       .catch(err => {
@@ -40,38 +41,53 @@ export const fetchPublished = () => {
   };
 };
 
-export const fetchSinglePost = (id) => {
-  return async (dispatch) => {
-    dispatch(fetchStarted({name: 'EDIT_POST'}));
+export const deletePost = (id) => {
+  return (dispatch) => {
+    dispatch(fetchStarted({name: 'DELETE_POST'}));
 
-   await Axios
-      .get(`http://localhost:8000/api/posts/${id}`)
-      .then(res => {
-        console.log('single post axios:',res.data);
-        dispatch(addPost(res.data));
+    Axios
+      .delete(`${API_URL}/posts/${id}`)
+      .then(() => {
         dispatch(fetchPublished());
       })
       .catch(err => {
-        dispatch(fetchError({ name: 'EDIT_POST', error: err.message || true }));
+        dispatch(fetchError({ name: 'DELETE_POST', error: err.message || true }));
       });
   };
 };
 
 export const addPostRequest = (post) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch(fetchStarted({ name: 'ADD_POST' }));
 
-   await Axios
-      .post('http://localhost:8000/api/posts/add', post)
-      .then(res => {
-        dispatch(addPost(res.data));
-        dispatch(fetchPublished());
-      })
+   Axios
+      .post(`${API_URL}/posts/add`, post)
+        console.log('post w axios:', post)
+      .then(() => {
+        dispatch(addPost(post));
+        //dispatch(fetchPublished())
+        }
+      )
       .catch(err => {
         dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
       });
   };
 };
+
+export const editPostRequest = (post) => {
+  console.log('co dostaje axios do edit:', post, post.postId );
+  return (dispatch) => {
+    dispatch(fetchStarted({name: 'EDIT_POST'}))
+  Axios 
+    .put(`${API_URL}/posts/${post.postId}/edit`, post)
+    .then(() =>{
+      dispatch(fetchPublished());
+    })
+    .catch(err => {
+      dispatch(fetchError({name: 'EDIT_POST', error: err.message || true}))
+    })
+  }
+}
 
 /*Initial state*/
 
@@ -110,9 +126,6 @@ export const reducer = (statePart = initialState, action={}) => {
         },
       };
     }
-    case EDIT_POST: {
-      return (statePart.map(post =>(post.id === action.payload.id ? {...post, ...action.payload} : post)))
-    }
     case ADD_POST: {
       return { 
         ...statePart,
@@ -123,7 +136,6 @@ export const reducer = (statePart = initialState, action={}) => {
         data: [...statePart.data, action.payload]
       };
     }
-
     default:
       return statePart;
   }

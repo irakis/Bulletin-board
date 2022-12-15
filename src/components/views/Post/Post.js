@@ -1,34 +1,33 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import SinglePost from '../../features/SinglePost';
 import Button from '@mui/material/Button';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-import Axios from 'axios'; 
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { deletePost } from '../../../redux/postsRedux';
 
 import clsx from 'clsx';
 
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Post.module.scss';
+import { useSelector } from 'react-redux';
+import { getOnePost } from '../../../redux/postsRedux';
 
 const Component = ({className, children}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [singlePost, setSinglePost] = useState('')
   const { id } = useParams();
+  console.log('post id?:',id)
 
-  useEffect(()=>{
-  
-  const getData = async (id) => { 
-    await Axios
-    .get(`http://localhost:8000/api/posts/${id}`)
-    .then(res => {
-      setSinglePost(res.data);
-    })
-  };
-  getData(id);
-  }, []);
+  const singlePost = useSelector(getOnePost(id));
+  console.log('to jest post w Post:' , singlePost)
 
+  const handleDelete = (e) =>{
+    dispatch(deletePost(id));
+    navigate(`/login/author/${singlePost.author}`);
+  }
 
 if(singlePost) {
   return (
@@ -36,10 +35,12 @@ if(singlePost) {
       <h2>Announcement</h2>
       {children}
       <SinglePost post = {singlePost}/>
-      <Button variant="outlined" href={`posts/${id}/edit`}>Edit</Button>
+      <Button variant="outlined" href={`${id}/edit`}>Edit</Button>
+      <Button variant="outlined" color="error" sx={{ml:2}} href={'/'}>cancel</Button>
+      <Button variant="contained" color="error" sx={{ml:2}} onClick={handleDelete}>delete</Button>
     </div>
     );
-  };
+  } return <p>Post not found</p>
 }
 
 Component.propTypes = {

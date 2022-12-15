@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { API_URL } from '../config';
 /* selectors */
 export const getAuthors = ({authors}) => (authors.data);
 export const getLoggedAuthor = (email) => ({authors}) => (authors.data.find(author => (author.email === email)));
@@ -30,7 +31,7 @@ export const fetchPublishedAuthors = () => {
     dispatch(fetchStarted());
 
     await Axios
-      .get('http://localhost:8000/api/authors')
+      .get(`${API_URL}/authors`)
       .then(res => {
         dispatch(fetchSuccess(res.data));
       })
@@ -45,7 +46,7 @@ export const loadAuthorsRequest = () => {
     dispatch(fetchStarted());
 
     await Axios
-      .put('http://localhost:8000/api/authors')
+      .put(`${API_URL}/authors`)
       .then(res => {
         console.log('edit author res.data:', res.data);
         dispatch(loginAuthor(res.data))

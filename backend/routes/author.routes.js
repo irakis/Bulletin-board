@@ -18,9 +18,9 @@ router.get('/authors', async (req, res) => {
 router.get('/authors/:id', async (req, res) => {
   try {
     const result = await Author
-      .findById(req.params.id);
+      .find({email: req.params.id});
     if(!result) res.status(404).json({ post: 'Not found' });
-    else res.json(result);
+    else res.json(result.role);//<=========================================tu ma zwracać rolę
   }
   catch(err) {
     res.status(500).json(err);
