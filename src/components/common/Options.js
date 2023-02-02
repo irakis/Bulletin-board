@@ -18,18 +18,13 @@ const statuses = [
   } 
 ];
 
-export default function SelectTextFields({action}, statusData) {
-  const [status, setOptionStatus] = React.useState('draft');
+export default function SelectTextFields({action, statusData}) {
+
+  const [status, setOptionStatus] = React.useState(statusData ? statusData : 'draft');
+
   React.useEffect(()=>{
-    setOptionStatus(statusData);
-  },[statusData, action])
-
-  action(status);
-
-  const handleChange = (event) => {
-    event.preventDefault();
-    setOptionStatus(event.target.value);
-  };
+    action(status);
+  },[status])
 
   return (
     <Box
@@ -38,14 +33,15 @@ export default function SelectTextFields({action}, statusData) {
       }}
       noValidate
       autoComplete="off"
+      enctype="multipart/form-data"
     >
       <div>
         <TextField
           id="outlined-select-currency"
           select
           label="Select"
-          value={status}
-          onChange={handleChange}
+          value={statusData ? statusData: status}
+          onChange={event=>setOptionStatus(event.target.value)}
           helperText="Select announcement state"
         >
           {statuses.map((option) => (

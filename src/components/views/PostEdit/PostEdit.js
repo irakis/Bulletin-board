@@ -15,15 +15,15 @@ import styles from './PostEdit.module.scss';
 const Component = ({className, children}) =>{ 
 
   const { id } = useParams();
-  console.log('postEdir id:', id);
+  console.log('postToedit id:', id);
   const postToEdit = useSelector(getOnePost(id));
-  console.log('postToEdit', postToEdit);
+  console.log('postToEdit from redux:', postToEdit);
   
   return (
   <div className={clsx(className, styles.root)}>
     <h2>Edit post:</h2>
     {children}
-    <PostForm data={ postToEdit }/>
+    <PostForm data={postToEdit}/>
   </div>
 )};
 

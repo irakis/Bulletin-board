@@ -8,10 +8,13 @@ import clsx from 'clsx';
 
 import styles from './MainLayout.module.scss';
 import { Header } from '../Header/Header';
+import { useAuth0 } from '@auth0/auth0-react';
 //import { useSelector } from 'react-redux';
 //import { getLoggedAuthor } from '../../../redux/authorRedux';
 
 const Component = ({className, children}) => {
+  const userData = useAuth0();
+  console.log('user w  mailLayout:', userData);
 
   return (
   <div className={clsx(className, styles.root)}>

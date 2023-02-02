@@ -16,7 +16,6 @@ import { NoPermission } from './components/views/NoPermission/NoPermission';
 import { Logged } from './components/views/Logged/Logged';
 import { Logout } from './components/views/Logout/Logout';
 import { fetchPublished } from './redux/postsRedux';
-import { fetchPublishedAuthors } from './redux/authorRedux';
 
 
 const theme = createTheme({
@@ -28,7 +27,6 @@ const theme = createTheme({
 const App = () =>{
   useEffect(()=>{
     store.dispatch(fetchPublished());
-    store.dispatch(fetchPublishedAuthors());
   },[])
   
   return (
@@ -44,7 +42,7 @@ const App = () =>{
               <Route exact path='/posts/:id' element={<Post/>} />
               <Route exact path='/posts/:id/edit' element={<PostEdit/>} />
               <Route exact path='/posts/nopermission' element={<NoPermission/>} />
-              <Route exact path='/login/author/:id' element={<Logged/>} />
+              <Route exact path='/login/author' element={<Logged/>} />
               <Route exact path='/logout' element={<Logout/>} />
               <Route path='*' element={<NotFound/>} />
             </Routes>

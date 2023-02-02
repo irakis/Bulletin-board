@@ -14,10 +14,11 @@ export default function MultilineTextFields({data}) {
 
   const { id } = useParams();
   
-  console.log('authorId:', id);
+  console.log('to jest id posta:', id);
+  console.log('data przychodzące z postEdit do PostForm:', data)
   const navigate = useNavigate();  
   
-  const [author, setAuthor] = useState(id);
+  const [author, setAuthor] = useState(!data ? id: '');//<======if !data id is author else id = post._id
   const [title, setTitle] = useState('');
   const [published, setPublished] = useState('');
   const [img, setImg] = useState('');
@@ -26,7 +27,7 @@ export default function MultilineTextFields({data}) {
   const [price, setPrice] = useState('');
   const [revised, setRevised] = useState('');
   const [status, setStatus] = useState('');
-  const [postId, setPostId] = useState(data?._id);
+  const [_id, set_id] = useState(data?._id);
 
   React.useEffect(()=>{
     setTitle(data?.title);
@@ -37,10 +38,10 @@ export default function MultilineTextFields({data}) {
     setPrice(data?.price);
     setRevised(data?.revised);
     setStatus(data?.status);
-    setAuthor(data ? data.author : id);
-    setPostId(data? data._id: '')
+    setAuthor(data?.author);
+    set_id(data? data._id: '')
   },[data])
-
+  console.log('status is an object??:', status);
   const dispatch = useDispatch();
 
   const handleCancel = (e) => {
@@ -48,21 +49,55 @@ export default function MultilineTextFields({data}) {
   }
   
   const handleClick = (e) => {
-    console.log('postForm data runs?');
    
-    if(data) {  
-      dispatch(editPostRequest({postId: postId, title: title, published: published, content: content, 
-        location: location, price: price, revised: revised, status: status, img: img, author: author}));
+    if(data) {
+      
+      const formData = new FormData();
+
+      formData.append('title', title);
+      formData.append('published', published);
+      formData.append('content', content);
+      formData.append('location', location);
+      formData.append('price', price);
+      formData.append('revised', revised);
+      formData.append('status', status);
+      formData.append('author', author);
+      formData.append('_id', _id);
+      formData.append('img', img);
+
+      console.log('form data w form:', formData);
+      fetch('https://httpbin.org/post',{
+        method: 'POST',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(res =>console.log(res));
+      
+      console.log('do edit przekauzjemy formData', formData, FormData);
+      dispatch(editPostRequest(formData, id))
+
     } else {
-      dispatch(addPostRequest({title: title, published: published, content: content, 
-        location: location, price: price, revised: revised, status: status, img: img, author: author}));
+
+      const formData = new FormData();
+
+      formData.append('title', title);
+      formData.append('published', published);
+      formData.append('content', content);
+      formData.append('location', location);
+      formData.append('price', price);
+      formData.append('revised', revised);
+      formData.append('status', status);
+      formData.append('author', id);//<====if no data use params returns author
+      formData.append('img', img);
+
+      dispatch(addPostRequest(formData));
     }
-  
-    navigate('/login/author/' + author)
+    navigate('/login/author/' + id)
   };
  
   return (
     <Box
+      encType='multipart/form-data'
       component="form"
       sx={{
         '& .MuiTextField-root': { m: 1, width: '80vh' },
@@ -103,7 +138,7 @@ export default function MultilineTextFields({data}) {
           onChange={e => {setPrice(e.target.value)}}
         />
 
-        <DataPicker action={setRevised} data={revised} text={'Revised'}/>
+        <DataPicker action={setRevised} data={data?.revised} text={'Revised'}/>
 
         <Options action={setStatus} statusData={status}/>
 
@@ -120,5 +155,4 @@ export default function MultilineTextFields({data}) {
       <Button onClick={handleCancel} variant="outlined" color="error" sx={{ml:2, mb:2}}>cancel</Button>
     </Box>
   )
-} 
-//return redirect('/login/author:id'); //<====================to nie działa
+}

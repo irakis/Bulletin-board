@@ -9,10 +9,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import { useAuth0 } from '@auth0/auth0-react'
 
-function ResponsiveAppBar({links}) {
+function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const pages = links;
+
+  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+  console.log('user w AppBar:', user?.email, isAuthenticated);
  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -73,11 +76,20 @@ function ResponsiveAppBar({links}) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><a href={page.href}>{page.text}</a></Typography>
+                <MenuItem onClick={()=> loginWithRedirect()}>
+                  <Typography textAlign="center"><a href={'/login/author'}>Login</a></Typography>
                 </MenuItem>
-              ))}
+
+                {/*how to hide buttons if no user?*/}
+
+                <MenuItem onClick={()=> logout({logoutParams: { returnTo: window.location.origin }})}>
+                  <Typography textAlign="center"><a href={'/logout'}>Logout</a></Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center"><a href={'/'}>Announcements</a></Typography>
+                </MenuItem>
+                
+                
             </Menu>
           </Box>
           <Typography
@@ -99,16 +111,29 @@ function ResponsiveAppBar({links}) {
             ANNOUNCEMENTS.APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+  
               <Button
-                key={page.text}
-                href={page.href}
-                onClick={handleCloseNavMenu}
+                href='/login/author'
+                onClick={()=>loginWithRedirect()}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page.text}
+                Login
               </Button>
-            ))}
+              <Button
+                href='#'
+                onClick={()=>logout()}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Logout
+              </Button>
+              <Button
+                href='/'
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                Announcements
+              </Button>
+
           </Box>
         </Toolbar>
       </Container>

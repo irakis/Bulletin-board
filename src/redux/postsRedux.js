@@ -32,7 +32,6 @@ export const fetchPublished = () => {
    Axios
       .get('http://localhost:8000/api/posts')
       .then(res => {
-        console.log(res.data);
         dispatch(fetchSuccess(res.data));
       })
       .catch(err => {
@@ -56,12 +55,19 @@ export const deletePost = (id) => {
   };
 };
 
-export const addPostRequest = (post) => {
+export const addPostRequest = (formData, id) => {
+  console.log('co dostaje axios w formData:', formData);
   return async (dispatch) => {
     dispatch(fetchStarted({ name: 'ADD_POST' }));
     try {
       await Axios
-      .post('http://localhost:8000/api/posts/add', post)
+      .post('http://localhost:8000/api/posts/add', 
+        formData,{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
         dispatch(fetchPublished());
     } catch (err) {
         dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
@@ -69,12 +75,12 @@ export const addPostRequest = (post) => {
   }
 };
 
-export const editPostRequest = (post) => {
-  console.log('co dostaje axios do edit:', post, post.postId );
+export const editPostRequest = (formData, id) => {
+  console.log('co dostaje axios do edit:', formData, id );
   return (dispatch) => {
     dispatch(fetchStarted({name: 'EDIT_POST'}))
   Axios 
-    .put(`${API_URL}/posts/${post.postId}/edit`, post)
+    .put(`${API_URL}/posts/${id}/edit`, formData)
     .then(() =>{
       dispatch(fetchPublished());
     })
