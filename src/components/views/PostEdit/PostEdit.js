@@ -15,9 +15,7 @@ import styles from './PostEdit.module.scss';
 const Component = ({className, children}) =>{ 
 
   const { id } = useParams();
-  console.log('postToedit id:', id);
   const postToEdit = useSelector(getOnePost(id));
-  console.log('postToEdit from redux:', postToEdit);
   
   return (
   <div className={clsx(className, styles.root)}>

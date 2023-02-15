@@ -6,7 +6,6 @@ import { useState } from 'react';
 export default function UploadButtons({action}) {
 
   const [file, setFile] = useState('');
-  console.log('file:', file);
 
   const handleChange = (e) =>{
 

@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session')
-//const multer = reqiure('multer');
+const fileupload = require('express-fileupload');
 
 const postsRoutes = require('./routes/posts.routes');
 
@@ -15,7 +15,8 @@ app.use(session({ secret: 'secretsessionkey112', resave: false, saveUninitialize
 /* MIDDLEWARE */
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(fileupload());
 
 /* API ENDPOINTS */
 app.use('/api', postsRoutes);

@@ -15,7 +15,6 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
   const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
-  console.log('user w AppBar:', user?.email, isAuthenticated);
  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -76,20 +75,22 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              { !isAuthenticated 
+                ?             
                 <MenuItem onClick={()=> loginWithRedirect()}>
                   <Typography textAlign="center"><a href={'/login/author'}>Login</a></Typography>
-                </MenuItem>
+                </MenuItem> 
+                :
+                <>
+                  <MenuItem onClick={()=> logout({logoutParams: { returnTo: window.location.origin }})}>
+                    <Typography textAlign="center"><a href={'/logout'}>Logout</a></Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center"><a href={'/login/author'}>Announcements</a></Typography>
+                  </MenuItem>
+                </>
+              }
 
-                {/*how to hide buttons if no user?*/}
-
-                <MenuItem onClick={()=> logout({logoutParams: { returnTo: window.location.origin }})}>
-                  <Typography textAlign="center"><a href={'/logout'}>Logout</a></Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><a href={'/'}>Announcements</a></Typography>
-                </MenuItem>
-                
-                
             </Menu>
           </Box>
           <Typography
@@ -111,29 +112,32 @@ function ResponsiveAppBar() {
             ANNOUNCEMENTS.APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-  
-              <Button
-                href='/login/author'
-                onClick={()=>loginWithRedirect()}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                Login
-              </Button>
-              <Button
-                href='#'
-                onClick={()=>logout()}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                Logout
-              </Button>
-              <Button
-                href='/'
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+              { !isAuthenticated ?
+                <Button
+                  href='/login/author'
+                  onClick={()=>loginWithRedirect()}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                Announcements
-              </Button>
-
+                  Login
+                </Button>
+                :
+                <>
+                  <Button
+                    href='#'
+                    onClick={()=>logout()}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    Logout
+                  </Button>
+                  <Button
+                    href='/login/author'
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                    Announcements
+                  </Button>
+                </>
+              }
           </Box>
         </Toolbar>
       </Container>

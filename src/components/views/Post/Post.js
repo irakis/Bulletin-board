@@ -26,7 +26,7 @@ const Component = ({className, children}) => {
 
   const handleDelete = (e) =>{
     dispatch(deletePost(id));
-    navigate(`/login/author/${singlePost.author}`);
+    navigate('/login/author');
   }
 
 if(singlePost) {
@@ -36,7 +36,7 @@ if(singlePost) {
       {children}
       <SinglePost post = {singlePost}/>
       <Button variant="outlined" href={`${id}/edit`}>Edit</Button>
-      <Button variant="outlined" color="error" sx={{ml:2}} href={'/'}>cancel</Button>
+      <Button variant="outlined" color="error" sx={{ml:2}} href={'/login/author'}>cancel</Button>
       <Button variant="contained" color="error" sx={{ml:2}} onClick={handleDelete}>delete</Button>
     </div>
     );

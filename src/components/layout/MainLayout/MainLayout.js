@@ -14,7 +14,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 const Component = ({className, children}) => {
   const userData = useAuth0();
-  console.log('user w  mailLayout:', userData);
 
   return (
   <div className={clsx(className, styles.root)}>

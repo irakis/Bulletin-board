@@ -37,7 +37,7 @@ const Component = ({className, children}) => {
     isAuthenticated && (
     <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
       <div>
-      {(authorRole !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href={`/posts/add/${id}`}>Add post</Button> : null}
+      {(authorRole !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href={`/posts/add`}>Add post</Button> : null}
       </div> 
         {children}
           {(authorRole === 'user' || authorRole === 'admin') ?

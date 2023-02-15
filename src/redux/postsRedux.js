@@ -15,6 +15,7 @@ const FETCH_START = createActionName('FETCH_START');
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 const ADD_POST = createActionName('ADD_POST');
+const EDIT_POST = createActionName('EDIT_POST')
 const DELETE_POST = createActionName('DELETE_POST');
 
 /* action creators */
@@ -22,6 +23,7 @@ export const fetchStarted = payload => ({ payload, type: FETCH_START });
 export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addPost = payload => ({payload, type: ADD_POST});
+export const editPost = payload => ({payload, type: EDIT_POST})
 //export const deleteSinglePost = payload => ({payload, type: DELETE_POST})
 
 /* thunk creators */
@@ -30,7 +32,7 @@ export const fetchPublished = () => {
     dispatch(fetchStarted({ name: 'FETCH_START' }));
 
    Axios
-      .get('http://localhost:8000/api/posts')
+      .get(`${API_URL}/posts`)
       .then(res => {
         dispatch(fetchSuccess(res.data));
       })
@@ -55,38 +57,39 @@ export const deletePost = (id) => {
   };
 };
 
-export const addPostRequest = (formData, id) => {
-  console.log('co dostaje axios w formData:', formData);
+export const addPostRequest = (serializedFormData) => {
+  console.log('co dostaje axios w serializedFormData:', serializedFormData);
   return async (dispatch) => {
     dispatch(fetchStarted({ name: 'ADD_POST' }));
     try {
-      await Axios
-      .post('http://localhost:8000/api/posts/add', 
-        formData,{
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
+      const res = await Axios
+      .post(`${ API_URL}/posts/add`,
+        serializedFormData
       )
-        dispatch(fetchPublished());
+      await dispatch(addPost(res.data))
+      console.log('axios res.data after add:', res)
+      await dispatch(fetchPublished());
     } catch (err) {
-        dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
+      dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
     }
   }
 };
 
-export const editPostRequest = (formData, id) => {
-  console.log('co dostaje axios do edit:', formData, id );
-  return (dispatch) => {
+export const editPostRequest = (serializedFormData, id) => {
+  console.log('co dostaje axios do edit:', serializedFormData, id );
+  return async (dispatch) => {
     dispatch(fetchStarted({name: 'EDIT_POST'}))
-  Axios 
-    .put(`${API_URL}/posts/${id}/edit`, formData)
-    .then(() =>{
-      dispatch(fetchPublished());
-    })
-    .catch(err => {
+  try{
+    const res = await Axios 
+      .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
+      console.log('axios did edit post?:', res)
+
+    await dispatch(editPost(res.config.data));
+    await dispatch(fetchPublished());
+
+  } catch(err) {
       dispatch(fetchError({name: 'EDIT_POST', error: err.message || true}))
-    })
+    }
   }
 }
 
@@ -136,6 +139,17 @@ export const reducer = (statePart = initialState, action={}) => {
         },
         data: [...statePart.data, action.payload]
       };
+    }
+    case EDIT_POST: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: [statePart.data.map(post => 
+          post._id === action.payload._id ? { ...post, ...action.payload } : post )]
+      }
     }
     default:
       return statePart;

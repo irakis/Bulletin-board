@@ -1,18 +1,20 @@
+const { ObjectId } = require('mongoose');
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-  author: { type: String, required : true, 
+  author: { type: String, required : false, 
     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'] },
-  published: { type: String, required: true },
-  revised: { type: String, required: true },
-  status: { type: String, required: true },
-  title: { type: String, required: true },
-  content: { type: String, required: true },
+  published: { type: String, required: false },
+  revised: { type: String, required: false },
+  status: { type: String, required: false },
+  title: { type: String, required: false },
+  content: { type: String, required: false },
   img: { type: String },
   price: { type: Number },
   phone: { type: String },
   location: { type: String },
-  isLogged: { type: Boolean }
+  isLogged: { type: Boolean },
+  id: { type: ObjectId }
 });
 
 module.exports = mongoose.model('Post', postSchema);

@@ -7,18 +7,14 @@ import Options from '../common/Options';
 import UploadButton from '../common/UploadButton';
 import { useDispatch } from 'react-redux';
 import { editPostRequest, addPostRequest } from '../../redux/postsRedux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function MultilineTextFields({data}) {
 
-  const { id } = useParams();
-  
-  console.log('to jest id posta:', id);
-  console.log('data przychodzące z postEdit do PostForm:', data)
   const navigate = useNavigate();  
   
-  const [author, setAuthor] = useState(!data ? id: '');//<======if !data id is author else id = post._id
   const [title, setTitle] = useState('');
   const [published, setPublished] = useState('');
   const [img, setImg] = useState('');
@@ -27,7 +23,12 @@ export default function MultilineTextFields({data}) {
   const [price, setPrice] = useState('');
   const [revised, setRevised] = useState('');
   const [status, setStatus] = useState('');
-  const [_id, set_id] = useState(data?._id);
+  const [_id, set_id] = useState('');
+  const [author, setAuthor] = useState('');
+
+  const { user } = useAuth0();
+  const authorId = user?.email
+  console.log('authorId at the component start:', authorId);
 
   React.useEffect(()=>{
     setTitle(data?.title);
@@ -38,20 +39,20 @@ export default function MultilineTextFields({data}) {
     setPrice(data?.price);
     setRevised(data?.revised);
     setStatus(data?.status);
-    setAuthor(data?.author);
-    set_id(data? data._id: '')
+    set_id(data?._id);
+    setAuthor(data?.author)
   },[data])
-  console.log('status is an object??:', status);
+
   const dispatch = useDispatch();
 
   const handleCancel = (e) => {
-    navigate('/posts/' + data?._id)
+    navigate('/login/author')
   }
   
   const handleClick = (e) => {
    
     if(data) {
-      
+
       const formData = new FormData();
 
       formData.append('title', title);
@@ -61,38 +62,42 @@ export default function MultilineTextFields({data}) {
       formData.append('price', price);
       formData.append('revised', revised);
       formData.append('status', status);
-      formData.append('author', author);
       formData.append('_id', _id);
       formData.append('img', img);
+      formData.append('author', author);
 
-      console.log('form data w form:', formData);
+      {/*console.log('form data w form:', formData);
       fetch('https://httpbin.org/post',{
         method: 'POST',
         body: formData
       })
         .then(res => res.json())
-        .then(res =>console.log(res));
+    .then(res =>console.log(res));*/}
       
-      console.log('do edit przekauzjemy formData', formData, FormData);
-      dispatch(editPostRequest(formData, id))
+      const serializedFormData = (Object.fromEntries(formData));  
+      dispatch(editPostRequest(serializedFormData, _id))
 
     } else {
 
+      setAuthor(authorId);
+      console.log('author in empty form:', author, authorId);
+      
       const formData = new FormData();
 
       formData.append('title', title);
+      formData.append('img', img);
       formData.append('published', published);
       formData.append('content', content);
       formData.append('location', location);
       formData.append('price', price);
       formData.append('revised', revised);
       formData.append('status', status);
-      formData.append('author', id);//<====if no data use params returns author
-      formData.append('img', img);
+      formData.append('author', authorId);//<======= dlaczego  w 82 nie zmienia stanu????? because you use hook in a condition?
 
-      dispatch(addPostRequest(formData));
+    const serializedFormData = (Object.fromEntries(formData));  
+    dispatch(addPostRequest(serializedFormData));
     }
-    navigate('/login/author/' + id)
+    navigate('/login/author')
   };
  
   return (

@@ -13,7 +13,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 const Component = ({className ,children}) => {
 
   const { isAuthenticated, isLoading, user } = useAuth0();
-  console.log('user w homepage', user);
   
   const dispatch = useDispatch();
 
