@@ -40,7 +40,7 @@ export default function SelectTextFields({action, statusData}) {
           id="outlined-select-currency"
           select
           label="Select"
-          value={statusData ? statusData: status}
+          value={statusData ? statusData : status}
           onChange={event=>setOptionStatus(event.target.value)}
           helperText="Select announcement state"
         >

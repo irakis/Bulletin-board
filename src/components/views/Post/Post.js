@@ -19,7 +19,6 @@ const Component = ({className, children}) => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  console.log('post id?:',id)
 
   const singlePost = useSelector(getOnePost(id));
   console.log('to jest post w Post:' , singlePost)

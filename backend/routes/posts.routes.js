@@ -1,57 +1,53 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const uuidv4 = require('uuidv4');
 const multer = require('multer');
 const fs = require('fs');
-const {promisify} = require('util');
-const pipeline = promisify(require('stream').pipeline)
 const Post = require('../models/post.model');
-const { Stream } = require('stream');
+
 
 /*muters Storge*/
 const storage = multer.diskStorage({
+
   destination: function (req, file, cb) {
-    cb(null, '/public/img/uploads')
+    cb(null, 'public/img/uploads/');
   },
+
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix);
-    console.log('uniqueSuffix:', uniqueSuffix);
-    console.log('file.fieldname:', file.fieldname);
+    cb(null, path.basename(file.originalname.replaceAll(' ','_'), 
+      path.extname(file.originalname)) + '-' + uniqueSuffix + path.extname(file.originalname));
+  },
+
+  limits: { fileSize: 2000000 
   }
-})
+});
 
 const upload = multer({ storage: storage })
-//const upload = multer({ dest: '/public/img/uploads' })
 
 router.post('/posts/add', upload.single('uploaded_file'), async (req, res) => {
+  const { author, published, revised, status, title, content, price, phone,  location } = req.body;
   try {
-
-    console.log('req and res:', req, res);
-    console.log('req.body:', req.body);
-
-    const { author, published, revised, status, title, content, img, price, phone, location } = req.body;
+    
     const newPost = await new Post({
       published: published,
       revised: revised,
       status: status,
       title: title,
       content: content,
-      img: '/public/img/uploads/' + img,
+      img: ('/img/uploads/' + req.file.filename),
       price: price,
-      phone: phone,
+      phone: phone,//=====>for further development
       location: location,
-      author: author
-  })
+      author: author,
+      },
+    );
+
+    console.log('newPost is:', newPost);
     await newPost.save();
 
-    console.log('newPost:', newPost);
-
-    if(!newPost) { res.status(404).json({ post: 'Not found' })
+    if(!newPost) { res.status(404).json({ post: 'newPost not found' })
     } else res.json(newPost);
-    
-    //pipeline(file.stream, fs.createWriteStream(`${_dirname}/public/img/uploads/${filename}`));
   }
   catch(err) {
     res.status(500).json(err);
@@ -88,9 +84,14 @@ router.get('/posts/:id', async (req, res) => {
 router.put('/posts/:id/edit', async (req, res) => {
   
   const {author, revised, _id, published, status, title, content, img, price, phone, location} = req.body;
+  console.log('edit post req.file:', req.files);
+  console.log('redit post req.body:', req.body);
+  console.log('edit całe req:', req);
 
   try {
     const post = await Post.findById(req.params.id);
+    console.log('edit post:', post);
+
       if(post) {
         await Post.updateOne({_id: _id},{$set: {author: author, revised: revised, status: status, 
           title: title, content: content, img: img, price: price, phone: phone, location: location, 

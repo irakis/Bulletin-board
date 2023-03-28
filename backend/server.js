@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session')
-const fileupload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 
 const postsRoutes = require('./routes/posts.routes');
 
@@ -16,19 +16,22 @@ app.use(session({ secret: 'secretsessionkey112', resave: false, saveUninitialize
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileupload());
+//app.use(fileUpload({
+ // createParentPath: true
+//}));
 
 /* API ENDPOINTS */
 app.use('/api', postsRoutes);
 
 /* API ERROR PAGES */
 app.use('/api', (req, res) => {
-  res.status(404).send({ post: 'Not found...' });
+  res.status(404).send({ post: '/api not found...' });
 });
 
 /* REACT WEBSITE */
 app.use(express.static(path.join(__dirname, '../build')));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../build/img/uploads')));
+app.use(express.static(path.join(__dirname, '../public/img/uploads')));
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });
@@ -44,5 +47,5 @@ db.on('error', err => console.log('Error: ' + err));
 /* START SERVER */
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  console.log('Server is running on port: '+port);
+  console.log('Server is running on port: ' + port);
 });

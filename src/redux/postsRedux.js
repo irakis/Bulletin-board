@@ -57,18 +57,18 @@ export const deletePost = (id) => {
   };
 };
 
-export const addPostRequest = (serializedFormData) => {
-  console.log('co dostaje axios w serializedFormData:', serializedFormData);
+export const addPostRequest = (formData) => {
+  
   return async (dispatch) => {
     dispatch(fetchStarted({ name: 'ADD_POST' }));
     try {
       const res = await Axios
-      .post(`${ API_URL}/posts/add`,
-        serializedFormData
-      )
-      await dispatch(addPost(res.data))
-      console.log('axios res.data after add:', res)
-      await dispatch(fetchPublished());
+      .post(`${API_URL}/posts/add`, formData);
+
+        console.log('axios res.data after add:', res.data);
+       await dispatch(addPost(res.data)); 
+       //await dispatch(fetchPublished());
+
     } catch (err) {
       dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
     }
@@ -81,8 +81,8 @@ export const editPostRequest = (serializedFormData, id) => {
     dispatch(fetchStarted({name: 'EDIT_POST'}))
   try{
     const res = await Axios 
-      .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
-      console.log('axios did edit post?:', res)
+    .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
+    console.log('axios did edit post?:', res)
 
     await dispatch(editPost(res.config.data));
     await dispatch(fetchPublished());

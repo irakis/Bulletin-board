@@ -16,11 +16,8 @@ export default function MaterialUIPickers({data, text, action}) {
   },[data]);
 
   const handleChange = (newValue) =>{
-    console.log('newValue:', newValue);
     setValue(newValue)
   }
-
-  console.log('dataPicker data2:', data, value);
   
   useEffect(() => {
     action(dayjs(value).format('DD/MM/YYYY'))},[value]
