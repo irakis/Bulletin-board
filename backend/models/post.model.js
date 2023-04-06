@@ -10,7 +10,7 @@ const postSchema = new mongoose.Schema({
   content: { type: String, required: true, min: [5, 'Content must have at least 5 characters'] },
   img: { type: String },
   price: { type: Number, required: true, min: [1, 'Price can not be 0'] },
-  phone: { type: Number },
+  phone: { type: Number, required: true },
   location: { type: String, required: true },
   isLogged: { type: Boolean },
   file: { type: Buffer }

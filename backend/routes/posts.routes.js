@@ -2,15 +2,17 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
-const fs = require('fs');
 const Post = require('../models/post.model');
+const fs = require('fs')
+const { promisify } = require('util')
 
+const unlinkAsync = promisify(fs.unlink);
 
-/*muters Storge*/
+/*multers Storge*/
 const storage = multer.diskStorage({
 
   destination: function (req, file, cb) {
-    cb(null, 'public/img/uploads/');
+    cb(null, 'build/img/uploads/');
   },
 
   filename: function (req, file, cb) {
@@ -37,13 +39,12 @@ router.post('/posts/add', upload.single('uploaded_file'), async (req, res) => {
       content: content,
       img: ('/img/uploads/' + req.file.filename),
       price: price,
-      phone: phone,//=====>for further development
+      phone: phone,
       location: location,
       author: author,
       },
     );
 
-    console.log('newPost is:', newPost);
     await newPost.save();
 
     if(!newPost) { res.status(404).json({ post: 'newPost not found' })
@@ -110,7 +111,14 @@ router.delete('/posts/:id', async (req, res)=>{
     const post = await Post.findById(req.params.id)
     if(post) {
       await Post.deleteOne({_id: req.params.id});
-      res.json({message: 'OK deleted'});
+
+      fs.unlink(path.join(process.cwd(), 'build/' + post.img), (err) => {
+        if(err) {
+          res.json({message: 'couldnt delete the file' + err})
+        }
+      });
+
+      res.send({message: 'OK deleted'});
     } else 
       res.status(404).json({message: '...not found'})
   } 

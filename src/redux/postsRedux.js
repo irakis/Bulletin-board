@@ -24,7 +24,7 @@ export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addPost = payload => ({payload, type: ADD_POST});
 export const editPost = payload => ({payload, type: EDIT_POST})
-//export const deleteSinglePost = payload => ({payload, type: DELETE_POST})
+export const deleteSinglePost = payload => ({payload, type: DELETE_POST})
 
 /* thunk creators */
 export const fetchPublished = () => {
@@ -45,14 +45,14 @@ export const fetchPublished = () => {
 export const deletePost = (id) => {
   return (dispatch) => {
     dispatch(fetchStarted({name: 'DELETE_POST'}));
-
+  
     Axios
       .delete(`${API_URL}/posts/${id}`)
-      .then(() => {
-        dispatch(fetchPublished());
-      })
-      .catch(err => {
-        dispatch(fetchError({ name: 'DELETE_POST', error: err.message || true }));
+      .then(()=> {
+        dispatch(fetchPublished())
+      }) 
+      .catch ((err) => {
+        dispatch(fetchError({ name: 'DELETE_POST', error: err.message || true }))
       });
   };
 };
@@ -67,7 +67,7 @@ export const addPostRequest = (formData) => {
 
         console.log('axios res.data after add:', res.data);
        await dispatch(addPost(res.data)); 
-       //await dispatch(fetchPublished());
+       await dispatch(fetchPublished());
 
     } catch (err) {
       dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
@@ -149,6 +149,17 @@ export const reducer = (statePart = initialState, action={}) => {
         },
         data: [statePart.data.map(post => 
           post._id === action.payload._id ? { ...post, ...action.payload } : post )]
+      }
+    }
+    case DELETE_POST: {
+      return {
+        ...statePart, 
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: [statePart.data.map(post=>
+          post._id !== action.payload._id ? { ...post} : null)]
       }
     }
     default:

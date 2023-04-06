@@ -2,23 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-const session = require('express-session')
-const fileUpload = require('express-fileupload');
+const session = require('express-session');
 
 const postsRoutes = require('./routes/posts.routes');
 
 const app = express();
 
-// init session mechanism
+/* INIT SESSION MECHANISM */
 app.use(session({ secret: 'secretsessionkey112', resave: false, saveUninitialized: true }));
 
 /* MIDDLEWARE */
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(fileUpload({
- // createParentPath: true
-//}));
 
 /* API ENDPOINTS */
 app.use('/api', postsRoutes);
@@ -31,7 +27,6 @@ app.use('/api', (req, res) => {
 /* REACT WEBSITE */
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(express.static(path.join(__dirname, '../build/img/uploads')));
-app.use(express.static(path.join(__dirname, '../public/img/uploads')));
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });

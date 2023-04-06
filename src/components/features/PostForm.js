@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import FormData from 'form-data';
-import fs from 'fs';
 
 export default function MultilineTextFields({data}) {
 
@@ -22,6 +21,7 @@ export default function MultilineTextFields({data}) {
   const [content, setContent] = useState('');
   const [location, setLocation] = useState('');
   const [price, setPrice] = useState('');
+  const [phone, setPhone] = useState('')
   const [revised, setRevised] = useState('');
   const [status, setStatus] = useState('');
   const [_id, set_id] = useState('');
@@ -39,6 +39,7 @@ export default function MultilineTextFields({data}) {
     setLocation(data?.location);
     setPrice(data?.price);
     setRevised(data?.revised);
+    setPhone(data?.phone);
     setStatus(data?.status);
     set_id(data?._id);
     setAuthor(data?.author);
@@ -81,6 +82,7 @@ export default function MultilineTextFields({data}) {
       formData.append('content', content);
       formData.append('location', location);
       formData.append('price', price);
+      formData.append('phone', phone);
       formData.append('revised', revised);
       formData.append('status', status);
       formData.append('author', authorId);
@@ -140,6 +142,18 @@ export default function MultilineTextFields({data}) {
           value={price}
           onChange={e => {setPrice(e.target.value)}}
           helperText={(!isNaN(price) && price>0)? '' : 'Price should be a number and is required'}
+        />
+
+        <TextField
+          sx={{ maxWidth: '150px' }}
+          id="outlined-multiline-flexible3"
+          error={!isNaN(phone) ? null: true}
+          label="Phone"
+          multiline
+          maxRows={4}
+          value={phone}
+          onChange={e => {setPhone(e.target.value)}}
+          helperText={(!isNaN(phone))? '' : 'Phone is required'}
         />
 
         <DataPicker action={setRevised} data={data?.revised} text={'Revised'}/>
