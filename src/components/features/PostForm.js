@@ -13,7 +13,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import FormData from 'form-data';
 
 export default function MultilineTextFields({data}) {
-
+  console.log('what is data:', data);
   const navigate = useNavigate();  
   
   const [title, setTitle] = useState('');
@@ -27,6 +27,7 @@ export default function MultilineTextFields({data}) {
   const [_id, set_id] = useState('');
   const [author, setAuthor] = useState('');
   const [img, setImg] = useState('');
+  const [uploadedFile, setUploadedFile] = useState('');
 
   const { user } = useAuth0();
   const authorId = user?.email
@@ -62,13 +63,16 @@ export default function MultilineTextFields({data}) {
       formData.append('content', content);
       formData.append('location', location);
       formData.append('price', price);
+      formData.append('phone', phone);
       formData.append('revised', revised);
       formData.append('status', status);
       formData.append('_id', _id);
       formData.append('author', author);
       formData.append('img', img);
+      formData.append('uploaded_file', uploadedFile);
 
-      const serializedFormData = (Object.fromEntries(formData));  
+      const serializedFormData = formData;
+      console.log('edit formData with new file:', Object.fromEntries(formData));  
       dispatch(editPostRequest(serializedFormData, _id));
 
     } else {
@@ -86,10 +90,9 @@ export default function MultilineTextFields({data}) {
       formData.append('revised', revised);
       formData.append('status', status);
       formData.append('author', authorId);
-      formData.append('uploaded_file', img);
+      formData.append('uploaded_file', uploadedFile);
     
     dispatch(addPostRequest(formData));
-    
     }
     navigate('/login/author')
   };
@@ -119,7 +122,7 @@ export default function MultilineTextFields({data}) {
 
         <DataPicker action={setPublished} data={data?.published} text={'Published'}/>
 
-        <UploadButton sx={{my: 'auto', py: 'auto'}} action={setImg}/>
+        <UploadButton sx={{my: 'auto', py: 'auto'}} action={setUploadedFile}/>
         
         <TextField
           sx={{ maxWidth: '150px' }}

@@ -45,7 +45,6 @@ export const fetchPublished = () => {
 export const deletePost = (id) => {
   return (dispatch) => {
     dispatch(fetchStarted({name: 'DELETE_POST'}));
-  
     Axios
       .delete(`${API_URL}/posts/${id}`)
       .then(()=> {
@@ -84,7 +83,6 @@ export const editPostRequest = (serializedFormData, id) => {
     .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
     console.log('axios did edit post?:', res)
 
-    await dispatch(editPost(res.config.data));
     await dispatch(fetchPublished());
 
   } catch(err) {

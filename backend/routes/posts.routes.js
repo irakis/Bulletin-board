@@ -4,9 +4,6 @@ const path = require('path');
 const multer = require('multer');
 const Post = require('../models/post.model');
 const fs = require('fs')
-const { promisify } = require('util')
-
-const unlinkAsync = promisify(fs.unlink);
 
 /*multers Storge*/
 const storage = multer.diskStorage({
@@ -47,7 +44,7 @@ router.post('/posts/add', upload.single('uploaded_file'), async (req, res) => {
 
     await newPost.save();
 
-    if(!newPost) { res.status(404).json({ post: 'newPost not found' })
+    if (!newPost) { res.status(404).json({ post: 'newPost not found' })
     } else res.json(newPost);
   }
   catch(err) {
@@ -61,7 +58,7 @@ router.get('/posts', async (req, res) => {
       .find({status: 'published'})
       .select('author title published location price phone revised status img content')
       .sort({published: -1});
-    if(!result) res.status(404).json({ post: 'Not found' });
+    if (!result) res.status(404).json({ post: 'Not found' });
     else res.json(result);
   }
   catch(err) {
@@ -74,7 +71,7 @@ router.get('/posts/:id', async (req, res) => {
     const result = await Post
       .findById(req.params.id)
       .select('author title published location price phone revised img status content');
-    if(!result) res.status(404).json({ post: 'Not found' });
+    if (!result) res.status(404).json({ post: 'Not found' });
     else res.json(result);
   }
   catch(err) {
@@ -82,47 +79,50 @@ router.get('/posts/:id', async (req, res) => {
   }
 });
 
-router.put('/posts/:id/edit', async (req, res) => {
+router.put('/posts/:id/edit', upload.single('uploaded_file'), async (req, res) => {
   
   const {author, revised, _id, published, status, title, content, img, price, phone, location} = req.body;
-  console.log('edit post req.file:', req.files);
-  console.log('redit post req.body:', req.body);
-  console.log('edit całe req:', req);
-
+  
   try {
     const post = await Post.findById(req.params.id);
-    console.log('edit post:', post);
 
-      if(post) {
+      if (post) {
+        const newFile = '/img/uploads/' + req.file?.filename;
+        if (req.file != undefined && post.img !== newFile) {
+            fs.unlink(path.join(process.cwd(), 'build/' + post.img), (err) => {
+              if (err) {
+                res.send({message: 'couldnt delete the file' + err})
+                }
+            });
+          req.body.img = newFile;
+        } else {
+            req.body.img = post.img; //====> do need this???
+        } 
         await Post.updateOne({_id: _id},{$set: {author: author, revised: revised, status: status, 
-          title: title, content: content, img: img, price: price, phone: phone, location: location, 
+          title: title, content: content, img: req.body.img, price: price, phone: phone, location: location, 
           published: published}}
         );
-      res.json({message: 'OK post updated'});
+        res.json({message: 'OK post updated'});
       } else {
         res.status(404).json({ message: err })
       }
-    } catch (err) { res.status(500).json({ message: err })}
-  }
-);
+  } catch (err) { if (err) { res.status(500).json({ message: err }) }}
+});
 
 router.delete('/posts/:id', async (req, res)=>{
   try{
     const post = await Post.findById(req.params.id)
-    if(post) {
+    if (post) {
       await Post.deleteOne({_id: req.params.id});
 
       fs.unlink(path.join(process.cwd(), 'build/' + post.img), (err) => {
-        if(err) {
-          res.json({message: 'couldnt delete the file' + err})
+        if (err) {
+          res.send({message: 'couldnt delete the file' + err})
         }
       });
-
-      res.send({message: 'OK deleted'});
     } else 
       res.status(404).json({message: '...not found'})
-  } 
-  catch (err) {
+  } catch (err) {
     res.status(500).json(err);
   }
 })
