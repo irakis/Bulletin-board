@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import styles from './MainLayout.module.scss';
 import { Header } from '../Header/Header';
 import { useAuth0 } from '@auth0/auth0-react';
+import Footer from '../../common/Footer';
 
 const Component = ({className, children}) => {
   const userData = useAuth0();
@@ -17,6 +18,7 @@ const Component = ({className, children}) => {
   <div className={clsx(className, styles.root)}>
     <Header />
     { children }
+    <Footer/>
   </div>
   );
 }

@@ -17,14 +17,10 @@ import styles from './Logged.module.scss';
 const Component = ({className, children}) => {
 
   const { isAuthenticated, isLoading, user } = useAuth0();
-  
-
   const [ authorRole, setAuthorRole] = useState('admin')
   
   const id = user
-  
   const allPosts = useSelector(getAll);
-  
   const authorsPosts = useSelector(getOneAuthorPosts(id));
 
   if(isLoading) {

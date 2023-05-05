@@ -82,12 +82,11 @@ router.get('/posts/:id', async (req, res) => {
 router.put('/posts/:id/edit', upload.single('uploaded_file'), async (req, res) => {
   
   const {author, revised, _id, published, status, title, content, img, price, phone, location} = req.body;
-  
+  const newFile = '/img/uploads/' + req.file?.filename;
   try {
     const post = await Post.findById(req.params.id);
 
       if (post) {
-        const newFile = '/img/uploads/' + req.file?.filename;
         if (req.file != undefined && post.img !== newFile) {
             fs.unlink(path.join(process.cwd(), 'build/' + post.img), (err) => {
               if (err) {
@@ -106,7 +105,7 @@ router.put('/posts/:id/edit', upload.single('uploaded_file'), async (req, res) =
       } else {
         res.status(404).json({ message: err })
       }
-  } catch (err) { if (err) { res.status(500).json({ message: err }) }}
+  } catch (err) { if (err) { res.status(500).json({ message: err }) }};
 });
 
 router.delete('/posts/:id', async (req, res)=>{

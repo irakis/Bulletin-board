@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import styles from './Logout.module.scss';
 
 const Component = ({className, children}) => (
-  <div className={clsx(className, styles.root)}>
+  <div className={clsx(className, styles.root, styles.size)}>
     <h2>You are logged out now.</h2>
     <h2>Thank you for visiting us.</h2>
     {children}

@@ -79,11 +79,10 @@ export const editPostRequest = (serializedFormData, id) => {
   return async (dispatch) => {
     dispatch(fetchStarted({name: 'EDIT_POST'}))
   try{
-    const res = await Axios 
+    await Axios 
     .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
-    console.log('axios did edit post?:', res)
 
-    await dispatch(fetchPublished());
+    dispatch(fetchPublished());
 
   } catch(err) {
       dispatch(fetchError({name: 'EDIT_POST', error: err.message || true}))
