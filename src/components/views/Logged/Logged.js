@@ -25,13 +25,13 @@ const Component = ({className, children}) => {
 
   if(isLoading) {
     return (
-      <div>...is loading</div>
+      <div  className={clsx(className, styles.root)} sx={{height: 300}}>...is loading</div>
     )
   } else {
   
   return (
     isAuthenticated && (
-    <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
+    <div className={clsx(className, styles.root)} sx={{height: 300}}>
       <div>
       {(authorRole !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href={`/posts/add`}>Add post</Button> : null}
       </div> 
@@ -62,6 +62,5 @@ Component.propTypes = {
 
 export {
   Component as Logged,
-  // Container as Homepage,
   Component as LoggedComponent,
 };

@@ -40,7 +40,8 @@ export default function TitlebarBelowImageList({ posts }) {
         ))}
       </ImageList>
       <Box sx={{ justifyContent: 'center', display: 'flex' }}>
-        <Pagination count={paginationCount} page={currentPage} boundaryCount={1} color="secondary" onChange={handleChange}/>
+        <Pagination count={paginationCount} page={currentPage} boundaryCount={1} color="secondary" 
+          onChange={handleChange}/>
       </Box>
     </>
   );

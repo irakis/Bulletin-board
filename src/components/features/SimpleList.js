@@ -5,26 +5,19 @@ import ListItemText from '@mui/material/ListItemText';
 import { Grid, Box, List } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
-import { styled } from '@mui/material/styles';
-
-
-const Demo = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-}));
 
 const Component = ({posts}) => {
   
   return (
-    <Box sx={{ flexGrow: 1, maxWidth: 752, mx: 'auto' }}>
+    <Box sx={{ my: 'auto', mx: 'auto', height: '100%'}}>
       
       <Grid container spacing={2}>
         
-        <Grid item xs={12} md={6} mx='auto'>
+        <Grid item xs={12} md={6} mx='auto' height="100%">
           <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
             List of titles:
           </Typography>
-          <Demo>
-            <List>
+            <List sx={{m: 'auto'}}>
               {posts.map(post => (
                 <ListItem key={post}>
                   <ListItemIcon>
@@ -37,7 +30,6 @@ const Component = ({posts}) => {
                ),
               )}
             </List>
-          </Demo>
         </Grid>
       </Grid>
     </Box>

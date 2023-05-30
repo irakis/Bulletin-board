@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 
 export default function MaterialUIPickers({data, text, action}) {
   const [value, setValue] = useState(dayjs().format('MM/DD/YYYY'));
-  // eslint-disable-next-line
+
   useEffect(()=>{
     setValue(data)
   },[data]);
