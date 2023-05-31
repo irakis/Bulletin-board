@@ -18,7 +18,7 @@ export default function Footer() {
         mt: 2
       }} sm={{ direction: 'column'}} >
       <Grid container sx={{
-        height: '160px',
+        height: '140px',
         width: '100%',
         m: 0,
         display: { xs: 'grid', sm: 'flex'},

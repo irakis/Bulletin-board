@@ -105,7 +105,7 @@ router.put('/posts/:id/edit', upload.single('uploaded_file'), async (req, res) =
       } else {
         res.status(404).json({ message: err })
       }
-  } catch (err) { if (err) { res.status(500).json({ message: err }) }};
+  } catch (err) { if (err) { res.status(500).json({ message: err }) }; return };
 });
 
 router.delete('/posts/:id', async (req, res)=>{

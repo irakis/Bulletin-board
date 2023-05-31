@@ -25,7 +25,7 @@ const Component = ({className, children}) => {
 
   if(isLoading) {
     return (
-      <div  className={clsx(className, styles.root)} sx={{height: 300}}>...is loading</div>
+      <div  className={clsx(className, styles.root, styles.size)} sx={{height: 300}}>...is loading</div>
     )
   } else {
   
