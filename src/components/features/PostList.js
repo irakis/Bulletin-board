@@ -5,6 +5,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { Pagination, Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
+import { Proptypes } from 'prop-types';
 
 export default function TitlebarBelowImageList({ posts }) {
 
@@ -17,7 +18,7 @@ export default function TitlebarBelowImageList({ posts }) {
 
   const handleChange =(event, value)=> {
     setCurrentPage(value);
-  }
+  };
 
   return (
     <>
@@ -46,3 +47,6 @@ export default function TitlebarBelowImageList({ posts }) {
     </>
   );
 }
+TitlebarBelowImageList.propTypes = {
+  posts: Proptypes.object,
+};

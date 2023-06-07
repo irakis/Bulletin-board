@@ -5,12 +5,21 @@
      "node": true,
      "jest": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
+    "requireConfigFile": false,
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
         "jsx": true
+    },
+    "babelOptions": {
+      "babelrc": false,
+      "configFile": false,
+      "presets": ["@babel/preset-env"],
+      "parserOpts": {
+        "plugins": ["jsx", "typescript"]
+      }
     }
   },
   "settings": {
@@ -24,7 +33,10 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "react-app"
+    "react-app",
+    "plugin:react/jsx-runtime",
+    "plugin:testing-library/react",
+    "plugin:jest/all"
   ],
   "rules": {
     "indent": [
@@ -34,7 +46,7 @@
     ],
     "linebreak-style": [
       "error",
-      "unix"
+      "windows"
     ],
     "quotes": [
       "error",

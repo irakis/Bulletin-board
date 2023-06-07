@@ -15,13 +15,13 @@ const Component = ({className, children}) => {
   const userData = useAuth0();
 
   return (
-  <div className={clsx(className, styles.root)}>
-    <Header />
-    { children }
-    <Footer/>
-  </div>
+    <div className={clsx(className, styles.root)}>
+      <Header />
+      { children }
+      <Footer/>
+    </div>
   );
-}
+};
 
 Component.propTypes = {
   children: PropTypes.node,

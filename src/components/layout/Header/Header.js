@@ -14,12 +14,12 @@ const Component = ({ className }) => {
 
   const userData = useAuth0();
   
-    return (
-      <div className={clsx(className, styles.root)}>
-        <AppBar/>
-      </div>
-    )
-}
+  return (
+    <div className={clsx(className, styles.root)}>
+      <AppBar/>
+    </div>
+  );
+};
 
 Component.propTypes = {
   children: PropTypes.node,

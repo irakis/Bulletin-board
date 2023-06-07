@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { useAuth0 } from '@auth0/auth0-react'
+import { useAuth0 } from '@auth0/auth0-react';
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -112,32 +112,32 @@ function ResponsiveAppBar() {
             ANNOUNCEMENTS.APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              { !isAuthenticated ?
+            { !isAuthenticated ?
+              <Button
+                href='/login/author'
+                onClick={()=>loginWithRedirect()}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Login
+              </Button>
+              :
+              <>
                 <Button
-                  href='/login/author'
-                  onClick={()=>loginWithRedirect()}
+                  href='#'
+                  onClick={()=>logout()}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  Login
+                  Logout
                 </Button>
-                :
-                <>
-                  <Button
-                    href='#'
-                    onClick={()=>logout()}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    Logout
-                  </Button>
-                  <Button
-                    href='/login/author'
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                    Announcements
-                  </Button>
-                </>
-              }
+                <Button
+                  href='/login/author'
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Announcements
+                </Button>
+              </>
+            }
           </Box>
         </Toolbar>
       </Container>

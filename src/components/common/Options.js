@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import { PropTypes } from 'prop-types';
 
 const statuses = [
   {
@@ -15,7 +16,7 @@ const statuses = [
   {
     value: 'published',
     label: 'published',
-  } 
+  }, 
 ];
 
 export default function SelectTextFields({action, statusData}) {
@@ -24,7 +25,7 @@ export default function SelectTextFields({action, statusData}) {
 
   React.useEffect(()=>{
     action(status);
-  },[status])
+  },[status]);
 
   return (
     <Box
@@ -54,3 +55,7 @@ export default function SelectTextFields({action, statusData}) {
     </Box>
   );
 }
+SelectTextFields.propTypes = {
+  action: PropTypes.func,
+  statusData: PropTypes.string,
+};

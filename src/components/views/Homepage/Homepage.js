@@ -23,12 +23,12 @@ const Component = ({className ,children}) => {
   const allPosts = useSelector(getAll); 
 
   return (
-    <div className={clsx(className, styles.root, )} sx={{ height: 300}}>
-        {children}
-        <SimpleList posts={allPosts}/>
+    <div className={clsx(className, styles.root, )}>
+      {children}
+      <SimpleList posts={allPosts}/>
     </div>
   );
-} 
+};
 
 Component.propTypes = {
   children: PropTypes.node,

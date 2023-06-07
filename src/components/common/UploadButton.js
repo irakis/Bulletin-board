@@ -1,12 +1,13 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { PropTypes } from 'prop-types';
 
 export default function UploadButtons({action}) {
 
   const handleChange = (e) =>{
     action(()=> e.target.files[0]);
-  }
+  };
 
   return (
     <Stack maxWidth={'24ch'} padding={'2ch'} spacing={2} mx={'auto'}>
@@ -18,3 +19,6 @@ export default function UploadButtons({action}) {
     </Stack>
   );
 }
+UploadButtons.propTypes = {
+  action: PropTypes.func,
+};

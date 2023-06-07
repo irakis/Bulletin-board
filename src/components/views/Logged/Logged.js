@@ -4,7 +4,7 @@ import PostList from '../../features/PostList';
 import Button from '@mui/material/Button';
 import { SimpleList } from '../../features/SimpleList';
 import { getAll, getOneAuthorPosts } from '../../../redux/postsRedux';
-import { useAuth0 } from '@auth0/auth0-react'
+import { useAuth0 } from '@auth0/auth0-react';
 
 import clsx from 'clsx';
 import { useSelector } from 'react-redux'; 
@@ -17,32 +17,32 @@ import styles from './Logged.module.scss';
 const Component = ({className, children}) => {
 
   const { isAuthenticated, isLoading, user } = useAuth0();
-  const [ authorRole, setAuthorRole] = useState('admin')
+  const [ authorRole, setAuthorRole] = useState('admin');
   
-  const id = user
+  const id = user;
   const allPosts = useSelector(getAll);
   const authorsPosts = useSelector(getOneAuthorPosts(id));
 
   if(isLoading) {
     return (
-      <div  className={clsx(className, styles.root, styles.size)} sx={{height: 300}}>...is loading</div>
-    )
+      <div  className={clsx(className, styles.root, styles.size)}>...is loading</div>
+    );
   } else {
   
-  return (
-    isAuthenticated && (
-    <div className={clsx(className, styles.root)} sx={{height: 300}}>
-      <div>
-      {(authorRole !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href={`/posts/add`}>Add post</Button> : null}
-      </div> 
-        {children}
+    return (
+      isAuthenticated && (
+        <div className={clsx(className, styles.root)}>
+          <div>
+            {(authorRole !== undefined) ? <Button sx={{ m: 3 }} variant="outlined" href={`/posts/add`}>Add post</Button> : null}
+          </div> 
+          {children}
           {(authorRole === 'user' || authorRole === 'admin') ?
             <PostList posts={(authorRole === 'admin') ? allPosts : authorsPosts} /> 
             : <SimpleList posts={allPosts}/>
           }          
-    </div>
-    )
-  )}
+        </div>
+      )
+    );}
 };
 
 Component.propTypes = {

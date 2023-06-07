@@ -15,7 +15,7 @@ const FETCH_START = createActionName('FETCH_START');
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 const ADD_POST = createActionName('ADD_POST');
-const EDIT_POST = createActionName('EDIT_POST')
+const EDIT_POST = createActionName('EDIT_POST');
 const DELETE_POST = createActionName('DELETE_POST');
 
 /* action creators */
@@ -23,15 +23,15 @@ export const fetchStarted = payload => ({ payload, type: FETCH_START });
 export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addPost = payload => ({payload, type: ADD_POST});
-export const editPost = payload => ({payload, type: EDIT_POST})
-export const deleteSinglePost = payload => ({payload, type: DELETE_POST})
+export const editPost = payload => ({payload, type: EDIT_POST});
+export const deleteSinglePost = payload => ({payload, type: DELETE_POST});
 
 /* thunk creators */
 export const fetchPublished = () => {
   return (dispatch) => {
     dispatch(fetchStarted({ name: 'FETCH_START' }));
 
-   Axios
+    Axios
       .get(`${API_URL}/posts`)
       .then(res => {
         dispatch(fetchSuccess(res.data));
@@ -48,10 +48,10 @@ export const deletePost = (id) => {
     Axios
       .delete(`${API_URL}/posts/${id}`)
       .then(()=> {
-        dispatch(fetchPublished())
+        dispatch(fetchPublished());
       }) 
       .catch ((err) => {
-        dispatch(fetchError({ name: 'DELETE_POST', error: err.message || true }))
+        dispatch(fetchError({ name: 'DELETE_POST', error: err.message || true }));
       });
   };
 };
@@ -62,38 +62,38 @@ export const addPostRequest = (formData) => {
     dispatch(fetchStarted({ name: 'ADD_POST' }));
     try {
       const res = await Axios
-      .post(`${API_URL}/posts/add`, formData);
+        .post(`${API_URL}/posts/add`, formData);
 
-        console.log('axios res.data after add:', res.data);
-       await dispatch(addPost(res.data)); 
-       await dispatch(fetchPublished());
+      console.log('axios res.data after add:', res.data);
+      await dispatch(addPost(res.data)); 
+      await dispatch(fetchPublished());
 
     } catch (err) {
       dispatch(fetchError({ name: 'ADD_POST', error: err.message || true }));
     }
-  }
+  };
 };
 
 export const editPostRequest = (serializedFormData, id) => {
   console.log('co dostaje axios do edit:', serializedFormData, id );
   return async (dispatch) => {
-    dispatch(fetchStarted({name: 'EDIT_POST'}))
-  try{
-    await Axios 
-    .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
+    dispatch(fetchStarted({name: 'EDIT_POST'}));
+    try{
+      await Axios 
+        .put(`${API_URL}/posts/${id}/edit`, serializedFormData, id);
 
-    dispatch(fetchPublished());
+      dispatch(fetchPublished());
 
-  } catch(err) {
-      dispatch(fetchError({name: 'EDIT_POST', error: err.message || true}))
+    } catch(err) {
+      dispatch(fetchError({name: 'EDIT_POST', error: err.message || true}));
     }
-  }
-}
+  };
+};
 
 /*Initial state*/
 
 const initialState = {
-  data: []
+  data: [],
 };
 
 /* reducer */
@@ -115,7 +115,7 @@ export const reducer = (statePart = initialState, action={}) => {
           active: false,
           error: false,
         },
-        data: [...action.payload]
+        data: [...action.payload],
       };
     }
     case FETCH_ERROR: {
@@ -134,7 +134,7 @@ export const reducer = (statePart = initialState, action={}) => {
           active: false,
           error: false,
         },
-        data: [...statePart.data, action.payload]
+        data: [...statePart.data, action.payload],
       };
     }
     case EDIT_POST: {
@@ -145,8 +145,8 @@ export const reducer = (statePart = initialState, action={}) => {
           error: false,
         },
         data: [statePart.data.map(post => 
-          post._id === action.payload._id ? { ...post, ...action.payload } : post )]
-      }
+          post._id === action.payload._id ? { ...post, ...action.payload } : post )],
+      };
     }
     case DELETE_POST: {
       return {
@@ -156,8 +156,8 @@ export const reducer = (statePart = initialState, action={}) => {
           error: false,
         },
         data: [statePart.data.map(post=>
-          post._id !== action.payload._id ? { ...post} : null)]
-      }
+          post._id !== action.payload._id ? { ...post} : null)],
+      };
     }
     default:
       return statePart;

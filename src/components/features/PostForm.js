@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import FormData from 'form-data';
+import { PropTypes } from 'prop-types';
 
 export default function MultilineTextFields({data}) {
   console.log('what is data:', data);
@@ -21,7 +22,7 @@ export default function MultilineTextFields({data}) {
   const [content, setContent] = useState('');
   const [location, setLocation] = useState('');
   const [price, setPrice] = useState('');
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState('');
   const [revised, setRevised] = useState('');
   const [status, setStatus] = useState('');
   const [_id, set_id] = useState('');
@@ -30,7 +31,7 @@ export default function MultilineTextFields({data}) {
   const [uploadedFile, setUploadedFile] = useState('');
 
   const { user } = useAuth0();
-  const authorId = user?.email
+  const authorId = user?.email;
 
   React.useEffect(()=>{
     setTitle(data?.title);
@@ -49,8 +50,8 @@ export default function MultilineTextFields({data}) {
   const dispatch = useDispatch();
 
   const handleCancel = (e) => {
-    navigate('/login/author')
-  }
+    navigate('/login/author');
+  };
   
   const handleClick = (e) => {
    
@@ -92,9 +93,9 @@ export default function MultilineTextFields({data}) {
       formData.append('author', authorId);
       formData.append('uploaded_file', uploadedFile);
     
-    dispatch(addPostRequest(formData));
+      dispatch(addPostRequest(formData));
     }
-    navigate('/login/author')
+    navigate('/login/author');
   };
 
   return (
@@ -107,7 +108,7 @@ export default function MultilineTextFields({data}) {
       noValidate
       autoComplete="off"
     >
-      <div sx={{flexDiretion: 'column'}}>
+      <Box sx={{flexDiretion: 'column'}}>
         <TextField
           error={title ? null: true}
           id="outlined-multiline-flexible1"
@@ -116,7 +117,7 @@ export default function MultilineTextFields({data}) {
           multiline
           maxRows={8}
           value={title}
-          onChange={e => {setTitle(e.target.value)}}
+          onChange={e => {setTitle(e.target.value);}}
           helperText={title ? '' : 'Title is required'}
         />
 
@@ -132,7 +133,7 @@ export default function MultilineTextFields({data}) {
           multiline
           maxRows={4}
           value={location}
-          onChange={e => {setLocation(e.target.value)}}
+          onChange={e => {setLocation(e.target.value);}}
           helperText={location && isNaN(location) ? '' : 'Location is required'}
         />
         <TextField
@@ -143,7 +144,7 @@ export default function MultilineTextFields({data}) {
           multiline
           maxRows={4}
           value={price}
-          onChange={e => {setPrice(e.target.value)}}
+          onChange={e => {setPrice(e.target.value);}}
           helperText={(!isNaN(price) && price>0)? '' : 'Price should be a number and is required'}
         />
 
@@ -155,7 +156,7 @@ export default function MultilineTextFields({data}) {
           multiline
           maxRows={4}
           value={phone}
-          onChange={e => {setPhone(e.target.value)}}
+          onChange={e => {setPhone(e.target.value);}}
           helperText={(!isNaN(phone))? '' : 'Phone is required'}
         />
 
@@ -169,13 +170,16 @@ export default function MultilineTextFields({data}) {
           label="Content"
           placeholder="Announcement content"
           value={content}
-          onChange={e => {setContent(e.target.value)}}
+          onChange={e => {setContent(e.target.value);}}
           helperText={`${content?.length}`> 5 ? '' : 'Content should have at least 5 characters'}
           multiline
         />
-      </div> 
+      </Box> 
       <Button onClick={handleClick} variant="outlined"sx={{mb:2}}>save changes</Button>
       <Button onClick={handleCancel} variant="outlined" color="error" sx={{ml:2, mb:2}}>cancel</Button>
     </Box>
-  )
+  );
 }
+MultilineTextFields.propTypes = {
+  data: PropTypes.object,
+};

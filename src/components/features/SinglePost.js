@@ -4,6 +4,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { PropTypes } from 'prop-types';
 
 export default function RecipeReviewCard({post}) {
 
@@ -42,3 +43,6 @@ export default function RecipeReviewCard({post}) {
     </Card>
   );
 }
+RecipeReviewCard.propTypes = {
+  post: PropTypes.object,
+};

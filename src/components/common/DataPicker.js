@@ -7,20 +7,21 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Box } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { PropTypes } from 'prop-types';
 
 export default function MaterialUIPickers({data, text, action}) {
   const [value, setValue] = useState(dayjs().format('MM/DD/YYYY'));
 
   useEffect(()=>{
-    setValue(data)
+    setValue(data);
   },[data]);
 
   const handleChange = (newValue) =>{
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
   
   useEffect(() => {
-    action(dayjs(value).format('DD/MM/YYYY'))},[value]
+    action(dayjs(value).format('DD/MM/YYYY'));},[value]
   );
   
   return (
@@ -44,3 +45,8 @@ export default function MaterialUIPickers({data, text, action}) {
     </Box>
   );
 }
+MaterialUIPickers.propTypes = {
+  data: PropTypes.string,
+  text: PropTypes.string,
+  action: PropTypes.func,
+};

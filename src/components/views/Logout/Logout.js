@@ -7,7 +7,6 @@ import clsx from 'clsx';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Logout.module.scss';
-console.log('styles:', styles);
 
 const Component = ({className, children}) => (
   <div className={clsx(className, styles.root, styles.size)}>

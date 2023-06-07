@@ -12,9 +12,9 @@ const reducers = {
 
 // add blank reducers for initial state properties without reducers
 //Object.keys(initialState).forEach(item => {
-  //if (typeof reducers[item] == 'undefined') {
-  //  reducers[item] = (statePart = null) => statePart;
- // }
+//if (typeof reducers[item] == 'undefined') {
+//  reducers[item] = (statePart = null) => statePart;
+// }
 //});
 const initialState = {};
 

@@ -18,12 +18,13 @@ const Component = ({className, children}) =>{
   const postToEdit = useSelector(getOnePost(id));
   
   return (
-  <div className={clsx(className, styles.root)}>
-    <h2>Edit post:</h2>
-    {children}
-    <PostForm data={postToEdit}/>
-  </div>
-)};
+    <div className={clsx(className, styles.root)}>
+      <h2>Edit post:</h2>
+      {children}
+      <PostForm data={postToEdit}/>
+    </div>
+  );
+};
 
 Component.propTypes = {
   children: PropTypes.node,
