@@ -10,8 +10,7 @@
     "npm": "9.x"
   },
   "scripts": {
-    "start": "run-p start:* ",
-    "start:heroku": "node backend/server.js",
+    "start": "node backend/server.js",
     "start-silent": "run-p start > /dev/null",
     "start:react": "react-scripts --openssl-legacy-provider start",
     "start-and-test": "run-p start-silent test ",
