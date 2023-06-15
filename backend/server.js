@@ -32,6 +32,12 @@ app.use('*', (req, res) => {
 });
 
 /* MONGOOSE */
+if(process.env.NODE_ENV === 'production') {
+  dbUri = DATABASE_URL
+} else {
+  dbUri = 'mongodb://localhost:27017/Bulletin-board'
+};
+
 mongoose.connect('mongodb://localhost:27017/Bulletin-board', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 const db = mongoose.connection;
 db.once('open', () => {
