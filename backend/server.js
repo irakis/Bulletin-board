@@ -47,9 +47,9 @@ db.on('error', err => console.log('Error: ' + err));
 
 /* START SERVER */
 if(process.env.NODE_ENV === 'production') {
-  const port = process.env.REACT_APP_HOST_URL;
+  port = process.env.REACT_APP_HOST_URL;
 } else {
-  const port = process.env.PORT || 8000;
+  port = process.env.PORT || 8000;
 }
 app.listen(port, () => {
   console.log('Server is running on port: ' + port);
