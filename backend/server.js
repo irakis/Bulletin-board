@@ -33,12 +33,12 @@ app.use('*', (req, res) => {
 
 /* MONGOOSE */
 if(process.env.NODE_ENV === 'production') {
-  dbUri = DATABASE_URL
+  dbUri = process.env.DATABASE_URL
 } else {
   dbUri = 'mongodb://localhost:27017/Bulletin-board'
 };
 
-mongoose.connect('mongodb://localhost:27017/Bulletin-board', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect( dbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 const db = mongoose.connection;
 db.once('open', () => {
   console.log('Successfully connected to the database');
@@ -47,7 +47,7 @@ db.on('error', err => console.log('Error: ' + err));
 
 /* START SERVER */
 if(process.env.NODE_ENV === 'production') {
-  const port = REACT_APP_HOST_URL;
+  const port = process.env.REACT_APP_HOST_URL;
 } else {
   const port = process.env.PORT || 8000;
 }
