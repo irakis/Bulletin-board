@@ -3,6 +3,9 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const postsRoutes = require('./routes/posts.routes');
 
@@ -36,6 +39,8 @@ if(process.env.NODE_ENV === 'production') {
   dbUri = process.env.DATABASE_URL
 } else if(process.env.NODE_ENV === 'development') {
   dbUri = 'mongodb://localhost:27017/Bulletin-board'
+} else {
+  dbUri = 'mongodb://localhost:27017/Bulletin-board'
 };
 
 mongoose.connect( dbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
@@ -47,9 +52,11 @@ db.on('error', err => console.log('Error: ' + err));
 
 /* START SERVER */
 if(process.env.NODE_ENV === 'production') {
-  port = process.env.REACT_APP_HOST_URL;
+  port = process.env.PORT;
+  console.log('port prod', port);
 } else {
   port = process.env.REACT_APP_PORT;
+  console.log('port dev', port);
 }
 app.listen(port, () => {
   console.log('Server is running on port: ' + port);
