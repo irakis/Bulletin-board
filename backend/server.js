@@ -35,15 +35,9 @@ app.use('*', (req, res) => {
 });
 
 /* MONGOOSE */
-if(process.env.NODE_ENV === 'production') {
-  dbUri = process.env.DATABASE_URL
-} else if(process.env.NODE_ENV === 'development') {
-  dbUri = 'mongodb://localhost:27017/Bulletin-board'
-} else {
-  dbUri = 'mongodb://localhost:27017/Bulletin-board'
-};
-
-mongoose.connect( dbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+console.log('what is the process:', process.env.NODE_ENV);
+dbUri = process.env.DATABASE_URL
+mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.once('open', () => {
   console.log('Successfully connected to the database');
@@ -51,13 +45,13 @@ db.once('open', () => {
 db.on('error', err => console.log('Error: ' + err));
 
 /* START SERVER */
-if(process.env.NODE_ENV === 'production') {
-  port = process.env.PORT;
-  console.log('port prod', port);
-} else {
-  port = process.env.REACT_APP_PORT;
-  console.log('port dev', port);
+if (process.env.NODE_ENV === 'production') {
+  port = process.env.PORT
+} else if (process.env.NODE_ENV === 'development' ){
+  port = process.env.REACT_APP_PORT
 }
+//const port = process.env.PORT || 8000;
+console.log('port is:', port);
 app.listen(port, () => {
   console.log('Server is running on port: ' + port);
 });
