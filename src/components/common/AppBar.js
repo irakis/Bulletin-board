@@ -43,9 +43,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-          
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -97,7 +95,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -123,7 +121,7 @@ function ResponsiveAppBar() {
               :
               <>
                 <Button
-                  href='#'
+                  href='/logout'
                   onClick={()=>logout()}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >

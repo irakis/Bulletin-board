@@ -30,7 +30,7 @@ export const deleteSinglePost = payload => ({payload, type: DELETE_POST});
 export const fetchPublished = () => {
   return (dispatch) => {
     dispatch(fetchStarted({ name: 'FETCH_START' }));
-
+    console.log('what is API_URL?:', `${API_URL}`);
     Axios
       .get(`${API_URL}/posts`)
       .then(res => {
